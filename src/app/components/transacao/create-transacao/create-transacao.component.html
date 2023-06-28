@@ -1,0 +1,45 @@
+<div class="container">
+    <h2>Adicionar Transação</h2>
+    <form>
+      <div class="form-group">
+          <label for="descricaoTransacao">Descrição</label>
+          <input type="text" class="form-control" id="descricaoTransacao" aria-describedby="descricaoTransacaoHelp" placeholder="Descrição da transação"
+          [(ngModel)]="transacao.descricao" name="descricao">
+          <small id="descricaoTransacaoHelp" class="form-text text-muted">Descrição da transação a ser salva</small>
+      </div>
+  
+      <div class="form-group">
+        <label for="descricaoTransacao">Carteira</label>
+        <select class="form-select" aria-describedby="descricaoCarteiraHelp" [(ngModel)]="transacao.carteira" name="carteira">
+          <option selected value="0" >Selecione a carteira</option>
+          <option value="1">Banco do Brasil</option>
+          <option value="2">PicPay</option>
+          <option value="3">Em Espécie</option>
+        </select>
+        <small id="descricaoCarteiraHelp" class="form-text text-muted">Informe a carteira a ter a transação registrada</small>
+      </div>
+  
+      <div class="form-group">
+        <label for="valorTransacao">Valor</label>
+        <input type="number" class="form-control" id="valorTransacao"
+        [(ngModel)]="transacao.valor" name="valor" aria-describedby="valorTransacaoHelp" placeholder="10,00">
+        <small id="valorTransacaoHelp" class="form-text text-muted">Valor da transação a ser salva</small>
+    </div>
+  
+    <div class="input-group">
+              <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="modelDate"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+              />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+          </div>
+  
+  
+    <button class="btn btn-primary" (click)="salvarTransacao()">Salvar</button>
+    </form>
+  </div>
+  
