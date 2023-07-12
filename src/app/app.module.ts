@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,11 @@ import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
 import { CreateTransacaoComponent } from './components/transacao/create-transacao/create-transacao.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ListaTransacaoComponent } from './components/transacao/lista-transacao/lista-transacao.component';
+import ptBR from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(ptBR);
 
 
 @NgModule({
@@ -20,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     HeaderComponent,
     NavComponent,
-    CreateTransacaoComponent
+    CreateTransacaoComponent,
+    ListaTransacaoComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,12 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt'
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
