@@ -28,11 +28,10 @@ export class CreateTransacaoComponent {
     let date:Date = new Date(data);
     this.transacao.dataTransacao.setDate(date.getDate());
     this.transacaoService.salvarTransacao(this.transacao).subscribe(
-      () => {
-        alert('Transação salva com sucesso!')
-        this.transacao = new Transacao(0, 0, '', new Date())
+      (transacaoSalva) => {
+        alert('Transação salva com sucesso!');
+        this.transacao = new Transacao(0, 0, '', new Date());
       }
     )
-    // this.transacaoService.salvarTransacao(this.transacao);
   }
 }

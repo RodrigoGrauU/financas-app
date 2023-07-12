@@ -8,20 +8,20 @@ import { Carteira } from 'src/app/model/carteira';
   providedIn: 'root'
 })
 export class TransacaoService {
-  private urlBase = 'http://localhost:3000/carteiras';
+  private urlBase = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
   // salvarTransacao(transacao: Transacao) {
   //   console.log('fazer chamada ao serviço externo via API REST');
   // }
   salvarTransacao(transacao: Transacao): Observable<Transacao> {
+    const urlTransacoes = this.urlBase + "/transacoes";
     console.log('fazer chamada ao serviço externo via API REST');
-    console.log(transacao);
-    return this.http.post<Transacao>(this.urlBase, transacao);
+    return this.http.post<Transacao>(urlTransacoes, transacao);
   }
 
   buscaTransacoes(idCarteira:number, anoTransacao:number | null, mesTransacao:number | null): Observable<Transacao[]> {
-    let urlTransacoes = this.urlBase + "/" + idCarteira + "/transacoes?";
+    let urlTransacoes = this.urlBase + "/carteiras/" + idCarteira + "/transacoes?";
     if(anoTransacao != null) {
       urlTransacoes += "anoTransacao=" + anoTransacao;
     }
@@ -35,7 +35,7 @@ export class TransacaoService {
   }
 
   buscaInformacoesCarteira(idCarteira:number) {
-    let urlFinal =  this.urlBase + "/" + idCarteira;
+    let urlFinal =  this.urlBase + "/carteiras/" + idCarteira;
     return this.http.get<Carteira>(urlFinal);
   }
 }
