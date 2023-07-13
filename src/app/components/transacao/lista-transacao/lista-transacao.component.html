@@ -3,10 +3,16 @@
 <form class="form-inline" id="form-lista-transacoes">
   <div class="form-row">
     <div class="form-group col-md-2">
+      <select class="form-control" [(ngModel)]="carteiraSelecionada" id="select-carteira" name="mes-transacao" (change)="alteraCarteiraSelecionada()">
+        <option selected value="0" >Carteira...</option>
+        <option *ngFor="let carteira of carteirasDisponiveis; let index = index" value="{{carteira.id}}">{{carteira.nome}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-md-2">
       <select class="form-control" [(ngModel)]="anoTransacaoSelecionado" name="ano-transacao" (change)="alteraAnoTransacao()">
         <option selected value="0" >selecionar ano...</option>
         <option *ngFor="let anoTransacao of anosTransacoes" value="{{anoTransacao.ano}}">{{anoTransacao.ano}}</option>
-
       </select>
     </div>
 
@@ -14,7 +20,6 @@
       <select class="form-control" [(ngModel)]="mesTransacaoSelecionado" id="select-mes-transacao" name="mes-transacao">
         <option selected value="0" >mês...</option>
         <option *ngFor="let mes of mesesDisponiveis; let index = index" value="{{mes}}">{{mes}}</option>
-
       </select>
     </div>
 

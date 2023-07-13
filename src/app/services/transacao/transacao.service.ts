@@ -34,9 +34,16 @@ export class TransacaoService {
     return this.http.get<Transacao[]>(urlTransacoes);
   }
 
-  buscaInformacoesCarteira(idCarteira:number) {
+  buscaCarteira(idCarteira:number) {
     let urlFinal =  this.urlBase + "/carteiras/" + idCarteira;
     return this.http.get<Carteira>(urlFinal);
+  }
+
+  buscaInformacoesCarteiras(): Observable<Carteira[]> {
+    //TODO - realizar busca a partir do usuário logado
+    let urlFinal =  this.urlBase + "/carteiras";
+    console.log('consultar servico externo via API REST: ' + urlFinal);
+    return this.http.get<Carteira[]>(urlFinal);
   }
 
   atualizaTransacao(transacao:Transacao): Observable<Transacao> {

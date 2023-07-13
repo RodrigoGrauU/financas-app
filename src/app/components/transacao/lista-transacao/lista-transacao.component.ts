@@ -1,4 +1,4 @@
-import { AnosTransacoes } from './../../../model/carteira';
+import { AnosTransacoes, Carteira } from './../../../model/carteira';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Transacao } from 'src/app/model/transacao';
@@ -10,9 +10,11 @@ import { TransacaoService } from 'src/app/services/transacao/transacao.service';
   styleUrls: ['./lista-transacao.component.css']
 })
 export class ListaTransacaoComponent implements OnInit {
+  carteiraSelecionada: number;
   mesTransacaoSelecionado:number;
   anoTransacaoSelecionado: number;
   pessoas:any = [];
+  carteirasDisponiveis: Carteira[] = [];
   mesesDisponiveis: number[] = [];
   anosDisponiveis: number[] = [];
   anosTransacoes: AnosTransacoes[] = [];
@@ -25,59 +27,38 @@ export class ListaTransacaoComponent implements OnInit {
   modalAtualizacao?:NgbModalRef;
 
   constructor(private transacaoService:TransacaoService, private modalService: NgbModal) {
+    this.carteiraSelecionada = 0;
     this.mesTransacaoSelecionado = 0;
     this.anoTransacaoSelecionado = 0;
 
-    let transacaoA:Transacao = {
-      id: 1,
-      valor: 254.76,
-      descricao: 'Gastos com animais',
-      dataTransacao: new Date(),
-      carteira: 2
-    }
-
-    let transacaoB = {
-      id: 2,
-      carteira: 2,
-      valor: 54.90,
-      descricao: 'Gastos com Saúde',
-      dataTransacao: new Date(2023, 5, 1)
-    }
-
-    this.transacoes.push(transacaoA, transacaoB);
+    this.transacoes = [];
   }
 
   ngOnInit(): void {
-    this.consultaInformacoesGeraisCarteira(2);
+    this.consultaCarteirasUsuario();
   }
-  consultaInformacoesGeraisCarteira(idCarteira: number) {
-    console.log('buscando informações da carteira com id: ' + idCarteira);
 
-    this.transacaoService.buscaInformacoesCarteira(idCarteira).subscribe(
-      (carteira) => {
-        this.anosTransacoes = carteira.anosTransacoes;
-        console.log(this.anosTransacoes);
-     }
+  //TODO - trabalhar com este método a ter a sessão do usuário logada
+  consultaCarteirasUsuario() {
+    this.transacaoService.buscaInformacoesCarteiras().subscribe(
+      (carteiras) => {
+        this.carteirasDisponiveis = carteiras;
+      }
     )
   }
 
-  buscaAnosDisponiveis(): void {
-    // TODO - a consultar anos disponiveis para o cliente
-    this.anosDisponiveis.push(2023,2022,2021,2020);
-  }
+  consultarCarteira(idCarteira: number) {
+    let carteiraEncontrada = this.carteirasDisponiveis.find(carteira => carteira.id == idCarteira);
+    this.anosTransacoes = carteiraEncontrada?.anosTransacoes || [];
 
-  buscaMesesDisponiveis(ano:number): void {
-    this.anosTransacoes.forEach(anoTransacao => {
-      if(anoTransacao.ano == ano) {
-        this.mesesDisponiveis = anoTransacao.mesesTransacoes;
-      }
-    })
+    this.anoTransacaoSelecionado = 0;
+    this.mesTransacaoSelecionado = 0;
   }
 
   alteraAnoTransacao() {
-    console.info('Consultar novas transações com o ano base: ' + this.anoTransacaoSelecionado);
-    console.info('Mês selecionado: ' + this.mesTransacaoSelecionado);
-    this.buscaMesesDisponiveis(this.anoTransacaoSelecionado);
+    let carteiraEncontrada = this.carteirasDisponiveis.find(carteira => carteira.id == this.carteiraSelecionada);
+    this.mesesDisponiveis = carteiraEncontrada?.anosTransacoes.find(anoLista => anoLista.ano == this.anoTransacaoSelecionado)?.mesesTransacoes || [];
+    this.mesTransacaoSelecionado = 0;
   }
 
   atualizaListaTransacao() {
@@ -134,5 +115,10 @@ export class ListaTransacaoComponent implements OnInit {
       )
       alert('Transação removida com sucesso!');
     }
+  }
+
+  alteraCarteiraSelecionada() {
+    console.info('Alterada carteira selecionada: ' + this.carteiraSelecionada + ' - a buscar informações dos meses disponíveis...');
+    this.consultarCarteira(this.carteiraSelecionada);
   }
 }
