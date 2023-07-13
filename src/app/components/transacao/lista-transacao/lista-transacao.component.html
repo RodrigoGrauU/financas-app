@@ -40,7 +40,7 @@
       <td>{{ transacao.valor | currency:'BRL' }}</td>
       <td>
         <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
-        <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+        <button type="button" class="btn btn-danger" (click)="removerTransacao(transacao)"><i class="bi bi-trash"></i></button>
       </td>
     </tr>
   </tbody>

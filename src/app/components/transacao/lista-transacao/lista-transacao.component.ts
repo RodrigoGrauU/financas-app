@@ -123,4 +123,16 @@ export class ListaTransacaoComponent implements OnInit {
       }
     )
   }
+
+  removerTransacao(transacao: Transacao) {
+    let confirmaRemocao = window.confirm('Tem certeza que deseja remover essa transação?');
+
+    if(confirmaRemocao) {
+      this.transacaoService.removeTransacao(transacao.id).subscribe(transacaoRemovida => {
+          this.transacoes = this.transacoes.filter(transacaoFiltrada => transacaoFiltrada.id != transacao.id);
+        }
+      )
+      alert('Transação removida com sucesso!');
+    }
+  }
 }

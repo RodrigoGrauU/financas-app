@@ -44,4 +44,9 @@ export class TransacaoService {
     console.log('fazer chamada ao serviço externo via API REST para atualizar registro: ' + urlAtualizacao);
     return this.http.put<Transacao>(urlAtualizacao, transacao);
   }
+
+  removeTransacao(idTransacao?: number): Observable<Transacao> {
+    console.log('fazer chamada ao serviço externo via API REST para remover registro. Id transação: ' + idTransacao);
+    return this.http.delete<Transacao>(this.urlBase + "/transacoes/" + idTransacao);
+  }
 }
