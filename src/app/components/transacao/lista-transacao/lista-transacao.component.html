@@ -1,74 +1,76 @@
-<h2>Transações</h2>
+<div class="container">
+  <h2>Transações</h2>
 
-<form class="form-inline" id="form-lista-transacoes">
-  <div class="form-row">
-    <div class="form-group col-md-2">
-      <select class="form-control" [(ngModel)]="carteiraSelecionada" id="select-carteira" name="mes-transacao" (change)="alteraCarteiraSelecionada()">
-        <option selected value="0" >Carteira...</option>
-        <option *ngFor="let carteira of carteirasDisponiveis; let index = index" value="{{carteira.id}}">{{carteira.nome}}</option>
-      </select>
+  <form class="form-inline" id="form-lista-transacoes">
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <select class="form-control" [(ngModel)]="carteiraSelecionada" id="select-carteira" name="mes-transacao" (change)="alteraCarteiraSelecionada()">
+          <option selected value="0" >Carteira...</option>
+          <option *ngFor="let carteira of carteirasDisponiveis; let index = index" value="{{carteira.id}}">{{carteira.nome}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <select class="form-control" [(ngModel)]="anoTransacaoSelecionado" name="ano-transacao" (change)="alteraAnoTransacao()">
+          <option selected value="0" >selecionar ano...</option>
+          <option *ngFor="let anoTransacao of anosTransacoes" value="{{anoTransacao.ano}}">{{anoTransacao.ano}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-1">
+        <select class="form-control" [(ngModel)]="mesTransacaoSelecionado" id="select-mes-transacao" name="mes-transacao">
+          <option selected value="0" >mês...</option>
+          <option *ngFor="let mes of mesesDisponiveis; let index = index" value="{{mes}}">{{mes}}</option>
+        </select>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary" (click)="atualizaListaTransacao()" >Atualizar</button>
+      </div>
     </div>
+  </form>
 
-    <div class="form-group col-md-2">
-      <select class="form-control" [(ngModel)]="anoTransacaoSelecionado" name="ano-transacao" (change)="alteraAnoTransacao()">
-        <option selected value="0" >selecionar ano...</option>
-        <option *ngFor="let anoTransacao of anosTransacoes" value="{{anoTransacao.ano}}">{{anoTransacao.ano}}</option>
-      </select>
+  <table class="table table-borderless">
+    <thead>
+      <th class="col">#</th>
+      <th class="col">Dia</th>
+      <th class="col">Descrição</th>
+      <th class="col">Valor</th>
+      <th><!-- edit and delete --></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transacao of transacoes; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ transacao.dataTransacao | date: 'dd' }}</td>
+        <td>{{ transacao.descricao }}</td>
+        <td>{{ transacao.valor | currency:'BRL' }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
+          <button type="button" class="btn btn-danger" (click)="removerTransacao(transacao)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Atualização de Transação</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
+    <div class="modal-body">
+      <form>
+        <app-create-transacao
+          [titulo]="' '"
+          [transacaoASerAtualizada]="trasacaoParaAlteracao" >
 
-    <div class="form-group col-md-1">
-      <select class="form-control" [(ngModel)]="mesTransacaoSelecionado" id="select-mes-transacao" name="mes-transacao">
-        <option selected value="0" >mês...</option>
-        <option *ngFor="let mes of mesesDisponiveis; let index = index" value="{{mes}}">{{mes}}</option>
-      </select>
+          <ng-template #atualizaTransacao let-tituloBotao="tituloBotao">
+            <button class="btn btn-primary" (click)="atualizarTransacao(trasacaoParaAlteracao)">Atualizar</button>
+          </ng-template>
+        </app-create-transacao>
+      </form>
     </div>
-
-    <div>
-      <button type="submit" class="btn btn-primary" (click)="atualizaListaTransacao()" >Atualizar</button>
-    </div>
-  </div>
-</form>
-
-<table class="table table-borderless">
-  <thead>
-    <th class="col">#</th>
-    <th class="col">Dia</th>
-    <th class="col">Descrição</th>
-    <th class="col">Valor</th>
-    <th><!-- edit and delete --></th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let transacao of transacoes; let i = index">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>{{ transacao.dataTransacao | date: 'dd' }}</td>
-      <td>{{ transacao.descricao }}</td>
-      <td>{{ transacao.valor | currency:'BRL' }}</td>
-      <td>
-        <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
-        <button type="button" class="btn btn-danger" (click)="removerTransacao(transacao)"><i class="bi bi-trash"></i></button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Atualização de Transação</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-		<form>
-      <app-create-transacao
-        [titulo]="' '"
-        [transacaoASerAtualizada]="trasacaoParaAlteracao" >
-
-        <ng-template #atualizaTransacao let-tituloBotao="tituloBotao">
-          <button class="btn btn-primary" (click)="atualizarTransacao(trasacaoParaAlteracao)">Atualizar</button>
-        </ng-template>
-      </app-create-transacao>
-		</form>
-	</div>
-	<!-- <div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Atualizar</button>
-	</div> -->
-</ng-template>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Atualizar</button>
+    </div> -->
+  </ng-template>
+</div>
