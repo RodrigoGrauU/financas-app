@@ -63,7 +63,7 @@ export class ListaTransacaoComponent implements OnInit {
 
   atualizaListaTransacao() {
     console.info('consultando dados via API');
-    this.transacaoService.buscaTransacoes(1, this.anoTransacaoSelecionado, this.mesTransacaoSelecionado).subscribe(
+    this.transacaoService.buscaTransacoes(this.carteiraSelecionada, this.anoTransacaoSelecionado, this.mesTransacaoSelecionado).subscribe(
       (transacoes) => {
         this.transacoes = transacoes;
       }
