@@ -1,5 +1,6 @@
 import { AnosTransacoes } from './../../../model/carteira';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Transacao } from 'src/app/model/transacao';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 
@@ -18,8 +19,12 @@ export class ListaTransacaoComponent implements OnInit {
 
   transacoes:Array<Transacao> = [];
 
+  //modal
+  closeResult = '';
+  trasacaoParaAlteracao:Transacao = new Transacao(0, 0, '', new Date());
+  modalAtualizacao?:NgbModalRef;
 
-  constructor(private transacaoService:TransacaoService) {
+  constructor(private transacaoService:TransacaoService, private modalService: NgbModal) {
     this.mesTransacaoSelecionado = 0;
     this.anoTransacaoSelecionado = 0;
 
@@ -83,5 +88,39 @@ export class ListaTransacaoComponent implements OnInit {
       }
     )
     console.info('Retorno API: ' + this.transacoes);
+  }
+
+  editarTransacao(content:any, transacaoAtualizacao:Transacao) {
+    this.trasacaoParaAlteracao = transacaoAtualizacao;
+
+    this.modalAtualizacao = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+    this.modalAtualizacao.result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    )
+  }
+
+  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+	}
+
+  atualizarTransacao(transacao: Transacao) {
+    this.transacaoService.atualizaTransacao(transacao).subscribe(
+      (transacaoAtualizada) => {
+        alert('Transação atualizada com sucesso!');
+        console.log(this.modalService);
+        this.modalAtualizacao?.close();
+      }
+    )
   }
 }

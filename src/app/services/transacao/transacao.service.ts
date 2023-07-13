@@ -38,4 +38,10 @@ export class TransacaoService {
     let urlFinal =  this.urlBase + "/carteiras/" + idCarteira;
     return this.http.get<Carteira>(urlFinal);
   }
+
+  atualizaTransacao(transacao:Transacao): Observable<Transacao> {
+    let urlAtualizacao = this.urlBase + "/transacoes/" + transacao.id;
+    console.log('fazer chamada ao serviço externo via API REST para atualizar registro: ' + urlAtualizacao);
+    return this.http.put<Transacao>(urlAtualizacao, transacao);
+  }
 }

@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListaTransacaoComponent } from './components/transacao/lista-transacao/lista-transacao.component';
 import ptBR from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(ptBR);
 
@@ -33,7 +34,8 @@ registerLocaleData(ptBR);
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModalModule
   ],
   providers: [
     {

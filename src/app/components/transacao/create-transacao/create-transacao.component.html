@@ -1,5 +1,5 @@
 <div class="container">
-    <h2>Adicionar Transação</h2>
+    <h2>{{ titulo ? titulo : 'Adicionar Transação' }}</h2>
     <form>
       <div class="form-group">
           <label for="descricaoTransacao">Descrição</label>
@@ -7,7 +7,7 @@
           [(ngModel)]="transacao.descricao" name="descricao">
           <small id="descricaoTransacaoHelp" class="form-text text-muted">Descrição da transação a ser salva</small>
       </div>
-  
+
       <div class="form-group">
         <label for="descricaoTransacao">Carteira</label>
         <select class="form-select" aria-describedby="descricaoCarteiraHelp" [(ngModel)]="transacao.carteira" name="carteira">
@@ -18,14 +18,14 @@
         </select>
         <small id="descricaoCarteiraHelp" class="form-text text-muted">Informe a carteira a ter a transação registrada</small>
       </div>
-  
+
       <div class="form-group">
         <label for="valorTransacao">Valor</label>
         <input type="number" class="form-control" id="valorTransacao"
         [(ngModel)]="transacao.valor" name="valor" aria-describedby="valorTransacaoHelp" placeholder="10,00">
         <small id="valorTransacaoHelp" class="form-text text-muted">Valor da transação a ser salva</small>
     </div>
-  
+
     <div class="input-group">
               <input
                   class="form-control"
@@ -37,9 +37,10 @@
               />
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
           </div>
-  
-  
-    <button class="btn btn-primary" (click)="salvarTransacao()">Salvar</button>
+    <ng-container *ngTemplateOutlet="(atualizaTransacaoCustomizado || adicaoTransacao)"></ng-container>
     </form>
   </div>
-  
+
+  <ng-template #adicaoTransacao let-tituloexibido="tituloNovo">
+    <button class="btn btn-primary" (click)="salvarTransacao()">Salvar</button>
+  </ng-template>

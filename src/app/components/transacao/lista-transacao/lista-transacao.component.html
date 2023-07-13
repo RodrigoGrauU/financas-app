@@ -39,9 +39,31 @@
       <td>{{ transacao.descricao }}</td>
       <td>{{ transacao.valor | currency:'BRL' }}</td>
       <td>
-        <button type="button" class="btn btn-primary"><i class="bi bi-pencil-square"></i></button>
+        <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
         <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
       </td>
     </tr>
   </tbody>
 </table>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Atualização de Transação</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+      <app-create-transacao
+        [titulo]="' '"
+        [transacaoASerAtualizada]="trasacaoParaAlteracao" >
+
+        <ng-template #atualizaTransacao let-tituloBotao="tituloBotao">
+          <button class="btn btn-primary" (click)="atualizarTransacao(trasacaoParaAlteracao)">Atualizar</button>
+        </ng-template>
+      </app-create-transacao>
+		</form>
+	</div>
+	<!-- <div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Atualizar</button>
+	</div> -->
+</ng-template>
