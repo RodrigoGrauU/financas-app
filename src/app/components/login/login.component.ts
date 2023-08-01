@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/model/usuario';
+import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
   selector: 'app-login',
@@ -8,13 +9,14 @@ import { Usuario } from 'src/app/model/usuario';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  usuario: Usuario = new Usuario(0, '', ''); 
+  usuario: Usuario = new Usuario(0, '', '');
 
-  constructor(private route:Router) { }
+  constructor(private route:Router, private loginService: LoginService) { }
   logar() {
-    alert('logar');
-    console.log(this.usuario);
-    
-    this.route.navigate(['/']);
+    this.loginService.logar(this.usuario).subscribe((resposta) => {
+      if(!resposta.sucesso) {
+        alert('Usuário ou senha inválidos!');
+      }
+    });
   }
 }

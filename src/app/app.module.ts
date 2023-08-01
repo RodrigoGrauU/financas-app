@@ -10,11 +10,13 @@ import { HomeComponent } from './views/home/home.component';
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
 import { CreateTransacaoComponent } from './components/transacao/create-transacao/create-transacao.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ListaTransacaoComponent } from './components/transacao/lista-transacao/lista-transacao.component';
 import ptBR from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { PrincipalComponent } from './views/principal/principal.component';
+import { TokenInterceptor } from './services/interceptors/token.interceptor';
 
 registerLocaleData(ptBR);
 
@@ -27,7 +29,8 @@ registerLocaleData(ptBR);
     HeaderComponent,
     NavComponent,
     CreateTransacaoComponent,
-    ListaTransacaoComponent
+    ListaTransacaoComponent,
+    PrincipalComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,11 @@ registerLocaleData(ptBR);
     {
       provide: LOCALE_ID,
       useValue: 'pt'
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

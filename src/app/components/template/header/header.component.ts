@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +9,9 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
   isMenuCollapsed = true;
 
+  constructor(private loginService: LoginService) { }
+
+  deslogar() {
+    this.loginService.deslogar();
+  }
 }
