@@ -23,7 +23,7 @@
         <label for="tipoTransacao">Tipo</label>
         <select class="form-select" aria-describedby="descricaoTiposTransacoesHelp" [(ngModel)]="transacao.tipoTransacao" name="tipoTransacao">
           <option value="undefined" >Selecione tipo...</option>
-          <option *ngFor="let tipo of listaTiposTransacoes" value="{{ tipo.id }}" >{{ tipo.nome }}</option>
+          <option *ngFor="let tipo of listaTiposTransacoes" [ngValue]="tipo" >{{ tipo.nome }}</option>
         </select>
         <small id="descricaoTiposTransacoesHelp" class="form-text text-muted">Informe o tipo da transação</small>
       </div>

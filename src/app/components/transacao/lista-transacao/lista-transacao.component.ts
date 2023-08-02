@@ -135,4 +135,8 @@ export class ListaTransacaoComponent implements OnInit {
   atualizaDataTransacao(data: NgbDateStruct) {
     this.modelDateParaAtualizar = data;
   }
+
+  isDebitoNaCarteira(transacao:Transacao) {
+    return transacao.tipoTransacao?.id?.toUpperCase() === "D";
+  }
 }

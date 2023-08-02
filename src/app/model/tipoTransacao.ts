@@ -1,5 +1,5 @@
 export class TipoTransacao {
-  id?:number;
+  id?:string;
   nome: string;
   descricao?:string;
 
