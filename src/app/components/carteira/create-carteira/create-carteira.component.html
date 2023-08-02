@@ -1,0 +1,28 @@
+<div class="container">
+    <h2>Adicionar Carteira</h2>
+    <form>
+      <div class="form-group">
+          <label for="nomeCarteira">Nome Carteira</label>
+          <input type="text" class="form-control" id="nomeCarteira" aria-describedby="nomeCarteiraHelp" placeholder="Nome da carteira"
+           name="nomeCarteira" [(ngModel)]="carteira.nome">
+          <small id="nomeCarteiraHelp" class="form-text text-muted">Nome da carteira a ser salva</small>
+      </div>
+
+      <div class="form-group">
+        <label for="descricaoCarteira">Descrição</label>
+        <input type="text" class="form-control" id="descricaoCarteira" aria-describedby="descricaoCarteiraHelp" placeholder="Descrição da carteira"
+         name="descricaoCarteira" [(ngModel)]="carteira.descricao">
+        <small id="descricaoCarteiraHelp" class="form-text text-muted">Descrição da carteira a ser salva</small>
+    </div>
+      <ng-container *ngTemplateOutlet="(atualizaCarteira || adicaoCarteira)" ></ng-container>
+    <!-- <ng-container *ngTemplateOutlet="(atualizaTransacaoCustomizado || adicaoTransacao)"></ng-container> -->
+
+  </form>
+  </div>
+
+<!-- <ng-template #adicaoTransacao let-tituloexibido="tituloNovo">
+  <button class="btn btn-primary" (click)="salvarTransacao()">Salvar</button>
+</ng-template> -->
+<ng-template #adicaoCarteira >
+  <button class="btn btn-primary" (click)="salvarCarteira()">Salvar</button>
+</ng-template>

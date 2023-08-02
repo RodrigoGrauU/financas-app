@@ -1,0 +1,52 @@
+<div class="container">
+  <h2>Carteiras</h2>
+
+  <table class="table table-borderless">
+    <thead>
+      <th class="col">#</th>
+      <th class="col">Nome</th>
+      <th class="col">Descrição</th>
+      <th><!-- edit and delete --></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let carteira of carteiras; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ carteira.nome }}</td>
+        <td>{{ carteira.descricao }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="editarCarteira(content, carteira)" ><i class="bi bi-pencil-square"></i></button>
+          <button type="button" class="btn btn-danger" (click)="removerCarteira(carteira)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Atualização de Carteira</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <app-create-carteira [carteira]="carteiraSelecionada">
+          <ng-template #atualizaCarteira>
+            <button class="btn btn-primary" (click)="atualizarCarteira(carteiraSelecionada)">Atualizar</button>
+          </ng-template>
+        </app-create-carteira>
+        <!-- <app-create-transacao
+          [titulo]="' '"
+          [transacaoASerAtualizada]="trasacaoParaAlteracao"
+          [modelDateAtualizacao]="modelDateParaAtualizar"
+          (dataAtualizadaOutput)="atualizaDataTransacao($event)">
+
+          <ng-template #atualizaTransacao let-tituloBotao="tituloBotao">
+            <button class="btn btn-primary" (click)="atualizarTransacao(trasacaoParaAlteracao)">Atualizar</button>
+          </ng-template>
+        </app-create-transacao> -->
+      </form>
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Atualizar</button>
+    </div> -->
+  </ng-template>
+</div>

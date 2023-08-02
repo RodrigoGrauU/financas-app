@@ -1,10 +1,10 @@
 export class Carteira {
-  id: number;
+  id?: number;
   nome: string;
+  descricao?:string;
   anosTransacoes: AnosTransacoes[] = [];
 
-  constructor(id: number, nome: string) {
-    this.id = id;
+  constructor(nome: string) {
     this.nome = nome;
   }
 

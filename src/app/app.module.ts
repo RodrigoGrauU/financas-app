@@ -19,6 +19,8 @@ import { PrincipalComponent } from './views/principal/principal.component';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { DateInputFormatterBoostrap } from './utils/DateInputFormatterBootstrap';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { CreateCarteiraComponent } from './components/carteira/create-carteira/create-carteira.component';
+import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lista-carteira.component';
 
 
 
@@ -34,7 +36,9 @@ registerLocaleData(ptBR);
     NavComponent,
     CreateTransacaoComponent,
     ListaTransacaoComponent,
-    PrincipalComponent
+    PrincipalComponent,
+    CreateCarteiraComponent,
+    ListaCarteiraComponent
   ],
   imports: [
     BrowserModule,

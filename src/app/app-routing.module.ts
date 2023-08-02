@@ -7,6 +7,8 @@ import { ListaTransacaoComponent } from './components/transacao/lista-transacao/
 import { PrincipalComponent } from './views/principal/principal.component';
 import { usuarioAutenticadoGuard } from './services/login/guards/usuario-autenticado.guard';
 import { usuarioNaoAutenticadoGuard } from './services/login/guards/usuario-nao-autenticado.guard';
+import { CreateCarteiraComponent } from './components/carteira/create-carteira/create-carteira.component';
+import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lista-carteira.component';
 
 const routes: Routes = [
   {
@@ -16,7 +18,9 @@ const routes: Routes = [
     path: '', component: PrincipalComponent, canActivate: [usuarioAutenticadoGuard],
     children: [
       {path: 'adiciona-transacao', component: CreateTransacaoComponent},
-      {path: 'transacoes', component: ListaTransacaoComponent}
+      {path: 'transacoes', component: ListaTransacaoComponent},
+      {path: 'criar-carteira', component: CreateCarteiraComponent},
+      {path: 'carteiras', component: ListaCarteiraComponent},
     ]
 
   }
