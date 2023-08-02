@@ -9,11 +9,23 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" [routerLink]="['/']">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/adiciona-transacao']">Adicionar Transação</a>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Carteiras</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" >Nova</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" >Lista de Carteiras</a></li>
+                </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/transacoes']">Transações</a>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Transações</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" [routerLink]="['/adiciona-transacao']">Nova</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" [routerLink]="['/transacoes']">Lista de Transações</a></li>
+                </ul>
               </li>
             </ul>
           </div>
