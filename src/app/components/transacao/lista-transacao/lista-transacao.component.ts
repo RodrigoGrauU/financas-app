@@ -1,8 +1,9 @@
 import { AnosTransacoes, Carteira } from './../../../model/carteira';
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Transacao } from 'src/app/model/transacao';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
+import { FormatDatainputService } from 'src/app/services/utils/format.datainput.service';
 
 @Component({
   selector: 'app-lista-transacao',
@@ -24,9 +25,11 @@ export class ListaTransacaoComponent implements OnInit {
   //modal
   closeResult = '';
   trasacaoParaAlteracao:Transacao = new Transacao(0, 0, '', new Date());
+  modelDateParaAtualizar:NgbDateStruct = {year: 2010, month: 1, day: 1};
   modalAtualizacao?:NgbModalRef;
 
-  constructor(private transacaoService:TransacaoService, private modalService: NgbModal) {
+  constructor(private transacaoService:TransacaoService, private modalService: NgbModal,
+    private formatDatainputService: FormatDatainputService) {
     this.carteiraSelecionada = 0;
     this.mesTransacaoSelecionado = 0;
     this.anoTransacaoSelecionado = 0;
@@ -68,10 +71,16 @@ export class ListaTransacaoComponent implements OnInit {
         this.transacoes = transacoes;
       }
     )
-    console.info('Retorno API: ' + this.transacoes);
+    console.info(this.transacoes);
   }
 
   editarTransacao(content:any, transacaoAtualizacao:Transacao) {
+    this.modelDateParaAtualizar = {
+      year: parseInt(transacaoAtualizacao.dataTransacao.toString().split('T')[0].split('-')[0]),
+      month: parseInt(transacaoAtualizacao.dataTransacao.toString().split('T')[0].split('-')[1]),
+      day: parseInt(transacaoAtualizacao.dataTransacao.toString().split('T')[0].split('-')[2])
+    };
+
     this.trasacaoParaAlteracao = transacaoAtualizacao;
 
     this.modalAtualizacao = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
@@ -96,11 +105,12 @@ export class ListaTransacaoComponent implements OnInit {
 	}
 
   atualizarTransacao(transacao: Transacao) {
+    transacao.dataTransacao = this.formatDatainputService.formatInputDateToOutput(this.modelDateParaAtualizar);
     this.transacaoService.atualizaTransacao(transacao).subscribe(
       (transacaoAtualizada) => {
         alert('Transação atualizada com sucesso!');
-        console.log(this.modalService);
         this.modalAtualizacao?.close();
+        this.atualizaListaTransacao();
       }
     )
   }
@@ -120,5 +130,9 @@ export class ListaTransacaoComponent implements OnInit {
   alteraCarteiraSelecionada() {
     console.info('Alterada carteira selecionada: ' + this.carteiraSelecionada + ' - a buscar informações dos meses disponíveis...');
     this.consultarCarteira(this.carteiraSelecionada);
+  }
+
+  atualizaDataTransacao(data: NgbDateStruct) {
+    this.modelDateParaAtualizar = data;
   }
 }

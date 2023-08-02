@@ -21,7 +21,8 @@
 
       <div class="form-group">
         <label for="valorTransacao">Valor</label>
-        <input type="number" class="form-control" id="valorTransacao"
+        <input type="text" class="form-control" id="valorTransacao"
+        currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
         [(ngModel)]="transacao.valor" name="valor" aria-describedby="valorTransacaoHelp" placeholder="10,00">
         <small id="valorTransacaoHelp" class="form-text text-muted">Valor da transação a ser salva</small>
     </div>
@@ -29,11 +30,14 @@
     <div class="input-group">
               <input
                   class="form-control"
-                  placeholder="yyyy-mm-dd"
+                  placeholder="dd/mm/aaaa"
                   name="dp"
-                  [(ngModel)]="modelDate"
+                  [(ngModel)]="modelDateAtualizacao"
                   ngbDatepicker
+                  (dateSelect)="atualizaData(modelDateAtualizacao)"
                   #d="ngbDatepicker"
+                  maxlength="10"
+                  (input)="atualizaData(modelDateAtualizacao)"
               />
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
           </div>
