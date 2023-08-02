@@ -35,6 +35,7 @@
       <th class="col">#</th>
       <th class="col">Dia</th>
       <th class="col">Descrição</th>
+      <th class="col">Categoria</th>
       <th class="col">Valor</th>
       <th><!-- edit and delete --></th>
     </thead>
@@ -43,6 +44,7 @@
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ transacao.dataTransacao | date: 'dd' }}</td>
         <td>{{ transacao.descricao }}</td>
+        <td>{{ transacao.categoriaTransacao ? transacao.categoriaTransacao.nome : 'N/A' }}</td>
         <td [ngClass]="isDebitoNaCarteira(transacao) ? 'money-red' : 'money-green'" >{{ transacao.valor | currency:'BRL' }}</td>
         <td>
           <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
