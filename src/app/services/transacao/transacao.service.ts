@@ -3,6 +3,8 @@ import { Transacao } from 'src/app/model/transacao';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Carteira } from 'src/app/model/carteira';
+import { TipoTransacao } from '../../model/tipoTransacao';
+import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +13,6 @@ export class TransacaoService {
   private urlBase = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
-  // salvarTransacao(transacao: Transacao) {
-  //   console.log('fazer chamada ao serviço externo via API REST');
-  // }
   salvarTransacao(transacao: Transacao): Observable<Transacao> {
     const urlTransacoes = this.urlBase + "/transacoes";
     console.log('fazer chamada ao serviço externo via API REST');
@@ -55,5 +54,16 @@ export class TransacaoService {
   removeTransacao(idTransacao?: number): Observable<Transacao> {
     console.log('fazer chamada ao serviço externo via API REST para remover registro. Id transação: ' + idTransacao);
     return this.http.delete<Transacao>(this.urlBase + "/transacoes/" + idTransacao);
+  }
+
+  buscaTiposTransacoes(): Observable<TipoTransacao[]> {
+    console.log('Realizando busca dos tipos de transações. URL: ' + this.urlBase + "/tipos-transacoes");
+    return this.http.get<TipoTransacao[]>(this.urlBase + "/tipos-transacoes");
+  }
+
+  buscaCategoriasTransacoes(): Observable<CategoriaTransacao[]> {
+    console.log('Realizando busca das categorias de transações. URL: ' + this.urlBase + "/categorias-transacoes");
+    return	this.http.get<CategoriaTransacao[]>(this.urlBase + "/categorias-transacoes");
+
   }
 }

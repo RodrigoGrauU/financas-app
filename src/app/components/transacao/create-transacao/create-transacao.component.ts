@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { DayTemplateContext } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-day-template-context';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 import { Transacao } from '../../../model/transacao';
+import { TipoTransacao } from 'src/app/model/tipoTransacao';
+import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
 
 @Component({
   selector: 'app-create-transacao',
@@ -13,10 +15,8 @@ import { Transacao } from '../../../model/transacao';
 })
 export class CreateTransacaoComponent implements OnInit {
 
-@Output() dataAtualizadaOutput = new EventEmitter();
-atualizaData(dataAtualizada: NgbDateStruct|undefined) {
-  this.dataAtualizadaOutput.emit(dataAtualizada);
-}
+
+  @Output() dataAtualizadaOutput = new EventEmitter();
   transacao:Transacao = new Transacao(0, 0.00, '', new Date());
   modelDate: NgbDateStruct = this.calendar.getToday();
 
@@ -25,11 +25,20 @@ atualizaData(dataAtualizada: NgbDateStruct|undefined) {
   @Input() titulo: string = "Adicionar Transação";
   @ContentChild('atualizaTransacao') atualizaTransacaoCustomizado?: TemplateRef<any>;
 
+  listaTiposTransacoes: Array<TipoTransacao> = [];
+  listaCategoriaTransacoes: Array<CategoriaTransacao> = [];
+
   constructor(private transacaoService: TransacaoService, private calendar: NgbCalendar,
     private formatDatainputService: FormatDatainputService) {}
   ngOnInit(): void {
     this.transacao = this.transacaoASerAtualizada ? this.transacaoASerAtualizada : this.transacao;
     this.modelDate = this.modelDateAtualizacao ? this.modelDateAtualizacao : this.modelDate;
+
+    this.buscaInformacoesGeraisCarteira();
+  }
+
+  atualizaData(dataAtualizada: NgbDateStruct|undefined) {
+    this.dataAtualizadaOutput.emit(dataAtualizada);
   }
 
   isDisabled = (date: NgbDate, current: { month: number; year: number }) => date.month !== current.month;
@@ -49,5 +58,25 @@ atualizaData(dataAtualizada: NgbDateStruct|undefined) {
         this.transacao = new Transacao(0, 0, '', new Date());
       }
     )
+  }
+
+  buscaInformacoesGeraisCarteira() {
+    const ID_OUTROS = 99;
+      this.transacaoService.buscaTiposTransacoes().subscribe(
+        (tiposTransacoes) => {
+          this.listaTiposTransacoes = tiposTransacoes;
+        }
+      );
+
+      this.transacaoService.buscaCategoriasTransacoes().subscribe(
+        (categoriasTransacoes) => {
+          this.listaCategoriaTransacoes = categoriasTransacoes;
+          this.listaCategoriaTransacoes.sort((a, b) => {
+            if(a.id == ID_OUTROS)  // id do Outros
+              return 1;
+            return a.nome > b.nome ? 1 : -1;
+          })
+        }
+      )
   }
 }
