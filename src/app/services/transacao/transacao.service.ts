@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Carteira } from 'src/app/model/carteira';
 import { TipoTransacao } from '../../model/tipoTransacao';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
+import { ResumoMes } from 'src/app/model/dto/resumoMes';
 
 @Injectable({
   providedIn: 'root'
@@ -65,5 +66,10 @@ export class TransacaoService {
     console.log('Realizando busca das categorias de transações. URL: ' + this.urlBase + "/categorias-transacoes");
     return	this.http.get<CategoriaTransacao[]>(this.urlBase + "/categorias-transacoes");
 
+  }
+
+  consultarResumoMes(ano: number, mes: number):Observable<ResumoMes> {
+    console.log('Realizando consulta do resumo do mes. URL: ' + this.urlBase + "/resumos-meses?ano=" + ano + "&mesTransacao=" + mes);
+    return this.http.get<ResumoMes>(this.urlBase + "/resumos-meses?ano=" + ano + "&mes=" + mes);
   }
 }

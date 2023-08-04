@@ -1,3 +1,4 @@
+import { ResumoMes } from './../../../model/dto/resumoMes';
 import { AnosTransacoes, Carteira } from './../../../model/carteira';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ModalDismissReasons, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -19,8 +20,8 @@ export class ListaTransacaoComponent implements OnInit {
   mesesDisponiveis: number[] = [];
   anosDisponiveis: number[] = [];
   anosTransacoes: AnosTransacoes[] = [];
-
   transacoes:Array<Transacao> = [];
+  resumoMes:ResumoMes = new ResumoMes(0, 0, 0, 0, 0);
 
   //modal
   closeResult = '';
@@ -69,9 +70,9 @@ export class ListaTransacaoComponent implements OnInit {
     this.transacaoService.buscaTransacoes(this.carteiraSelecionada, this.anoTransacaoSelecionado, this.mesTransacaoSelecionado).subscribe(
       (transacoes) => {
         this.transacoes = transacoes;
+         this.consultarResumoMes(this.anoTransacaoSelecionado, this.mesTransacaoSelecionado);
       }
     )
-    console.info(this.transacoes);
   }
 
   editarTransacao(content:any, transacaoAtualizacao:Transacao) {
@@ -138,5 +139,11 @@ export class ListaTransacaoComponent implements OnInit {
 
   isDebitoNaCarteira(transacao:Transacao) {
     return transacao.tipoTransacao?.id?.toUpperCase() === "D";
+  }
+
+  consultarResumoMes(ano:number, mes:number){
+    this.transacaoService.consultarResumoMes(ano, mes).subscribe(resposta => {
+      this.resumoMes = resposta;
+    })
   }
 }

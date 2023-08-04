@@ -1,0 +1,18 @@
+<div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+  <div class="card-header">Resumo Mês</div>
+  <div class="card-body">
+    <h5 class="card-title">{{buscaNomeMes(resumoMes.mes)}}</h5>
+    <div class="entrada-fluxo">
+      <span>Entrada: </span>
+      <span>{{ resumoMes.entrada| currency:'BRL' }}</span>
+    </div>
+    <div class="saida-fluxo">
+      <span>Saída: </span>
+      <span>{{ resumoMes.saida| currency:'BRL' }}</span>
+    </div>
+    <div class="saldo-fluxo" [ngClass]="checkValueSaldoStyle(resumoMes.saldoFinal)">
+      <span>Saldo Final: </span>
+      <span>{{ resumoMes.saldoFinal| currency:'BRL' }}</span>
+    </div>
+  </div>
+</div>

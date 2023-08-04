@@ -21,6 +21,7 @@ import { DateInputFormatterBoostrap } from './utils/DateInputFormatterBootstrap'
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { CreateCarteiraComponent } from './components/carteira/create-carteira/create-carteira.component';
 import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lista-carteira.component';
+import { ResumoMesComponent } from './components/transacao/resumo-mes/resumo-mes.component';
 
 
 
@@ -38,7 +39,8 @@ registerLocaleData(ptBR);
     ListaTransacaoComponent,
     PrincipalComponent,
     CreateCarteiraComponent,
-    ListaCarteiraComponent
+    ListaCarteiraComponent,
+    ResumoMesComponent
   ],
   imports: [
     BrowserModule,
