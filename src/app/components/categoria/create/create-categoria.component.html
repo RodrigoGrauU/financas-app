@@ -1,0 +1,23 @@
+<div class="container">
+  <h2 *ngIf="isExibeTitulo">{{ titulo }}</h2>
+  <form>
+    <div class="form-group">
+        <label for="nomeCategoria">Nome Carteira</label>
+        <input type="text" class="form-control" id="nomeCategoria" aria-describedby="nomeCategoriaHelp" placeholder="Nome da categoria"
+         name="nomeCategoria" [(ngModel)]="categoria.nome">
+        <small id="nomeCategoriaHelp" class="form-text text-muted">Nome da carteira a ser salva</small>
+    </div>
+
+    <div class="form-group">
+      <label for="descricaoCategoria">Descrição</label>
+      <input type="text" class="form-control" id="descricaoCategoria" aria-describedby="descricaoCategoriaHelp" placeholder="Descrição da categoria"
+       name="descricaoCategoria" [(ngModel)]="categoria.descricao">
+      <small id="descricaoCategoriaHelp" class="form-text text-muted">Descrição da categoria a ser salva</small>
+  </div>
+    <ng-container *ngTemplateOutlet="(atualizaCategoria || adicaoCategoria)" ></ng-container>
+</form>
+</div>
+
+<ng-template #adicaoCategoria >
+<button class="btn btn-primary" (click)="salvarCategoria(categoria)">Salvar</button>
+</ng-template>

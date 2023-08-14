@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>Categorias</h2>
+
+  <table class="table table-borderless">
+    <thead>
+      <th class="col">#</th>
+      <th class="col">Nome</th>
+      <th class="col">Descrição</th>
+      <th><!-- edit and delete --></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let categoria of categorias; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ categoria.nome }}</td>
+        <td>{{ categoria.descricao }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="editarCategoria(content, categoria)" ><i class="bi bi-pencil-square"></i></button>
+          <button type="button" class="btn btn-danger" (click)="removerCategoria(categoria)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Atualização de Categoria</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <app-create-categoria
+        [isExibeTitulo]="false"
+        [categoria]="categoriaSelecionada">
+          <ng-template #atualizaCategoria>
+            <button class="btn btn-primary" (click)="atualizarCategoria(categoriaSelecionada)">Atualizar</button>
+          </ng-template>
+        </app-create-categoria>
+      </form>
+    </div>
+  </ng-template>
+</div>

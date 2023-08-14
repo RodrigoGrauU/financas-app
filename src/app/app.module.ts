@@ -22,6 +22,8 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { CreateCarteiraComponent } from './components/carteira/create-carteira/create-carteira.component';
 import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lista-carteira.component';
 import { ResumoMesComponent } from './components/transacao/resumo-mes/resumo-mes.component';
+import { CreateCategoriaComponent } from './components/categoria/create/create-categoria.component';
+import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
 
 
 
@@ -40,7 +42,9 @@ registerLocaleData(ptBR);
     PrincipalComponent,
     CreateCarteiraComponent,
     ListaCarteiraComponent,
-    ResumoMesComponent
+    ResumoMesComponent,
+    CreateCategoriaComponent,
+    ListaCategoriaComponent
   ],
   imports: [
     BrowserModule,

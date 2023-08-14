@@ -9,6 +9,8 @@ import { usuarioAutenticadoGuard } from './services/login/guards/usuario-autenti
 import { usuarioNaoAutenticadoGuard } from './services/login/guards/usuario-nao-autenticado.guard';
 import { CreateCarteiraComponent } from './components/carteira/create-carteira/create-carteira.component';
 import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lista-carteira.component';
+import { CreateCategoriaComponent } from './components/categoria/create/create-categoria.component';
+import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,8 @@ const routes: Routes = [
       {path: 'transacoes', component: ListaTransacaoComponent},
       {path: 'criar-carteira', component: CreateCarteiraComponent},
       {path: 'carteiras', component: ListaCarteiraComponent},
+      {path: 'adiciona-categoria', component: CreateCategoriaComponent},
+      {path: 'categorias', component: ListaCategoriaComponent},
     ]
 
   }
