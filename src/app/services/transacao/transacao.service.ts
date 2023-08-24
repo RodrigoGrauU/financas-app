@@ -6,12 +6,13 @@ import { Carteira } from 'src/app/model/carteira';
 import { TipoTransacao } from '../../model/tipoTransacao';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
 import { ResumoMes } from 'src/app/model/dto/resumoMes';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransacaoService {
-  private urlBase = 'http://localhost:3000';
+  private urlBase = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   salvarTransacao(transacao: Transacao): Observable<Transacao> {

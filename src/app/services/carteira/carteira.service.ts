@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Carteira } from 'src/app/model/carteira';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarteiraService {
 
-  private urlBase = 'http://localhost:3000';
+  private urlBase = environment.apiUrl;
 
   constructor(private HttpClient:HttpClient) { }
 
