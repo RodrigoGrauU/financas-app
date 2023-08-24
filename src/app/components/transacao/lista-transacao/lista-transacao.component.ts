@@ -53,7 +53,7 @@ export class ListaTransacaoComponent implements OnInit {
 
   consultarCarteira(idCarteira: number) {
     let carteiraEncontrada = this.carteirasDisponiveis.find(carteira => carteira.id == idCarteira);
-    this.anosTransacoes = carteiraEncontrada?.anosTransacoes || [];
+    this.anosTransacoes = carteiraEncontrada?.listaAnosTransacoes || [];
 
     this.anoTransacaoSelecionado = 0;
     this.mesTransacaoSelecionado = 0;
@@ -61,7 +61,7 @@ export class ListaTransacaoComponent implements OnInit {
 
   alteraAnoTransacao() {
     let carteiraEncontrada = this.carteirasDisponiveis.find(carteira => carteira.id == this.carteiraSelecionada);
-    this.mesesDisponiveis = carteiraEncontrada?.anosTransacoes.find(anoLista => anoLista.ano == this.anoTransacaoSelecionado)?.mesesTransacoes || [];
+    this.mesesDisponiveis = carteiraEncontrada?.listaAnosTransacoes.find(anoLista => anoLista.ano == this.anoTransacaoSelecionado)?.meses || [];
     this.mesTransacaoSelecionado = 0;
   }
 
