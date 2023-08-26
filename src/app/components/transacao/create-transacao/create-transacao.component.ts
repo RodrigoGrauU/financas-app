@@ -7,6 +7,7 @@ import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 import { Transacao } from '../../../model/transacao';
 import { TipoTransacao } from 'src/app/model/tipoTransacao';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
+import { Carteira } from 'src/app/model/carteira';
 
 @Component({
   selector: 'app-create-transacao',
@@ -17,7 +18,7 @@ export class CreateTransacaoComponent implements OnInit {
 
 
   @Output() dataAtualizadaOutput = new EventEmitter();
-  transacao:Transacao = new Transacao(0, 0.00, '', new Date());
+  transacao:Transacao = new Transacao(0.00, '', new Date());
   modelDate: NgbDateStruct = this.calendar.getToday();
 
   @Input() transacaoASerAtualizada?: Transacao;
@@ -27,13 +28,13 @@ export class CreateTransacaoComponent implements OnInit {
 
   listaTiposTransacoes: Array<TipoTransacao> = [];
   listaCategoriaTransacoes: Array<CategoriaTransacao> = [];
+  carteirasDisponiveis: Carteira[] = [];
 
   constructor(private transacaoService: TransacaoService, private calendar: NgbCalendar,
     private formatDatainputService: FormatDatainputService) {}
   ngOnInit(): void {
     this.transacao = this.transacaoASerAtualizada ? this.transacaoASerAtualizada : this.transacao;
     this.modelDate = this.modelDateAtualizacao ? this.modelDateAtualizacao : this.modelDate;
-
     this.buscaInformacoesGeraisCarteira();
   }
 
@@ -55,7 +56,7 @@ export class CreateTransacaoComponent implements OnInit {
     this.transacaoService.salvarTransacao(this.transacao).subscribe(
       (transacaoSalva) => {
         alert('Transação salva com sucesso!');
-        this.transacao = new Transacao(0, 0, '', new Date());
+        this.transacao = new Transacao(0, '', new Date());
       }
     )
   }
@@ -78,5 +79,23 @@ export class CreateTransacaoComponent implements OnInit {
           })
         }
       )
+
+      this.transacaoService.buscaInformacoesCarteiras().subscribe(
+        (carteiras) => {
+          this.carteirasDisponiveis = carteiras;
+        }
+      )
+  }
+
+  compareCarteira(carteiraA:any, carteiraB:any):boolean {
+    return carteiraA && carteiraB && carteiraA.id == carteiraB.id;
+  }
+
+  compareTipoTransacao(tipoTransacaoA:any, tipoTransacaoB:any):boolean {
+    return tipoTransacaoA && tipoTransacaoB && tipoTransacaoA == tipoTransacaoB;
+  }
+
+  compareCategoriaTransacao(categoriaTransacaoA:any, categoriaTransacaoB:any):boolean {
+    return categoriaTransacaoA && categoriaTransacaoB && categoriaTransacaoA.id == categoriaTransacaoB.id;
   }
 }

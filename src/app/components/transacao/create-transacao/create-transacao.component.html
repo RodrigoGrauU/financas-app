@@ -10,28 +10,25 @@
 
       <div class="form-group">
         <label for="descricaoTransacao">Carteira</label>
-        <select class="form-select" aria-describedby="descricaoCarteiraHelp" [(ngModel)]="transacao.carteira" name="carteira">
-          <option selected value="0" >Selecione a carteira</option>
-          <option value="1">Banco do Brasil</option>
-          <option value="2">PicPay</option>
-          <option value="3">Em Espécie</option>
+        <select class="form-select" aria-describedby="descricaoCarteiraHelp" [(ngModel)]="transacao.carteira" name="carteira" [compareWith]="compareCarteira">
+          <option value="undefined" >Selecione a carteira</option>
+          <option *ngFor="let carteira of carteirasDisponiveis; let index = index" [ngValue]="carteira">{{carteira.nome}}</option>
         </select>
         <small id="descricaoCarteiraHelp" class="form-text text-muted">Informe a carteira a ter a transação registrada</small>
       </div>
 
       <div class="form-group">
         <label for="tipoTransacao">Tipo</label>
-        <select class="form-select" aria-describedby="descricaoTiposTransacoesHelp" [(ngModel)]="transacao.tipoTransacao" name="tipoTransacao">
+        <select class="form-select" aria-describedby="descricaoTiposTransacoesHelp" [(ngModel)]="transacao.tipoTransacao" name="tipoTransacao" [compareWith]="compareTipoTransacao">
           <option value="undefined" >Selecione tipo...</option>
-          <option *ngFor="let tipo of listaTiposTransacoes" [ngValue]="tipo" >{{ tipo.nome }}</option>
+          <option *ngFor="let tipo of listaTiposTransacoes" [ngValue]="tipo" >{{ tipo }}</option>
         </select>
         <small id="descricaoTiposTransacoesHelp" class="form-text text-muted">Informe o tipo da transação</small>
       </div>
 
       <div class="form-group">
         <label for="tipoTransacao">Categoria</label>
-        <select class="form-select" aria-describedby="descricaoCategoriaTransacaoHelp" [(ngModel)]="transacao.categoriaTransacao" name="categoriaTransacao">
-          <option value="undefined" >Selecione a categoria...</option>
+        <select class="form-select" aria-describedby="descricaoCategoriaTransacaoHelp" [(ngModel)]="transacao.categoriaTransacao" name="categoriaTransacao" [compareWith]="compareCategoriaTransacao">
           <option *ngFor="let categoria of listaCategoriaTransacoes" [ngValue]="categoria" >{{ categoria.nome }}</option>
         </select>
         <small id="descricaoCategoriaTransacaoHelp" class="form-text text-muted">Informe a categoria da transação. Ex: Saúde, Alimentação, Educação...</small>

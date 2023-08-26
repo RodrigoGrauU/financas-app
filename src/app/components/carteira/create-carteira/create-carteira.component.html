@@ -15,14 +15,9 @@
         <small id="descricaoCarteiraHelp" class="form-text text-muted">Descrição da carteira a ser salva</small>
     </div>
       <ng-container *ngTemplateOutlet="(atualizaCarteira || adicaoCarteira)" ></ng-container>
-    <!-- <ng-container *ngTemplateOutlet="(atualizaTransacaoCustomizado || adicaoTransacao)"></ng-container> -->
-
   </form>
   </div>
 
-<!-- <ng-template #adicaoTransacao let-tituloexibido="tituloNovo">
-  <button class="btn btn-primary" (click)="salvarTransacao()">Salvar</button>
-</ng-template> -->
 <ng-template #adicaoCarteira >
   <button class="btn btn-primary" (click)="salvarCarteira()">Salvar</button>
 </ng-template>

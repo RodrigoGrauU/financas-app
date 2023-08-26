@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaService {
 
-  urlBase: string = "http://localhost:3000";
+  urlBase: string = environment.apiUrl;
 
   constructor(private httpClient:HttpClient) { }
 

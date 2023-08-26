@@ -16,7 +16,7 @@ export class TransacaoService {
   constructor(private http: HttpClient) { }
 
   salvarTransacao(transacao: Transacao): Observable<Transacao> {
-    const urlTransacoes = this.urlBase + "/transacoes";
+    const urlTransacoes = this.urlBase + "/carteiras/" + transacao.carteira?.id + "/transacoes";
     console.log('fazer chamada ao serviço externo via API REST');
     return this.http.post<Transacao>(urlTransacoes, transacao);
   }
@@ -47,15 +47,15 @@ export class TransacaoService {
     return this.http.get<Carteira[]>(urlFinal);
   }
 
-  atualizaTransacao(transacao:Transacao): Observable<Transacao> {
-    let urlAtualizacao = this.urlBase + "/transacoes/" + transacao.id;
+  atualizaTransacao(carteiraId:number, transacao:Transacao): Observable<Transacao> {
+    let urlAtualizacao = this.urlBase + "/carteiras/" + carteiraId + "/transacoes/" + transacao.id;
     console.log('fazer chamada ao serviço externo via API REST para atualizar registro: ' + urlAtualizacao);
     return this.http.put<Transacao>(urlAtualizacao, transacao);
   }
 
-  removeTransacao(idTransacao?: number): Observable<Transacao> {
+  removeTransacao(carteiraId:number, idTransacao?: number): Observable<Transacao> {
     console.log('fazer chamada ao serviço externo via API REST para remover registro. Id transação: ' + idTransacao);
-    return this.http.delete<Transacao>(this.urlBase + "/transacoes/" + idTransacao);
+    return this.http.delete<Transacao>(this.urlBase + "/carteiras/" + carteiraId + "/transacoes/" + idTransacao);
   }
 
   buscaTiposTransacoes(): Observable<TipoTransacao[]> {

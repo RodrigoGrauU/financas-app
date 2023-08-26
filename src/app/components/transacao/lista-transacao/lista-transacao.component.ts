@@ -5,6 +5,7 @@ import { ModalDismissReasons, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-b
 import { Transacao } from 'src/app/model/transacao';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 import { FormatDatainputService } from 'src/app/services/utils/format.datainput.service';
+import { TipoTransacao } from 'src/app/model/tipoTransacao';
 
 @Component({
   selector: 'app-lista-transacao',
@@ -25,7 +26,7 @@ export class ListaTransacaoComponent implements OnInit {
 
   //modal
   closeResult = '';
-  trasacaoParaAlteracao:Transacao = new Transacao(0, 0, '', new Date());
+  trasacaoParaAlteracao:Transacao = new Transacao(0, '', new Date());
   modelDateParaAtualizar:NgbDateStruct = {year: 2010, month: 1, day: 1};
   modalAtualizacao?:NgbModalRef;
 
@@ -71,6 +72,7 @@ export class ListaTransacaoComponent implements OnInit {
       (transacoes) => {
         this.transacoes = transacoes;
          this.consultarResumoMes(this.anoTransacaoSelecionado, this.mesTransacaoSelecionado);
+         console.log(this.transacoes);
       }
     )
   }
@@ -105,9 +107,12 @@ export class ListaTransacaoComponent implements OnInit {
 		}
 	}
 
-  atualizarTransacao(transacao: Transacao) {
+  atualizarTransacao(carteiraId:number | undefined, transacao: Transacao) {
+    if(carteiraId === undefined) {
+      carteiraId = 0;
+    }
     transacao.dataTransacao = this.formatDatainputService.formatInputDateToOutput(this.modelDateParaAtualizar);
-    this.transacaoService.atualizaTransacao(transacao).subscribe(
+    this.transacaoService.atualizaTransacao(carteiraId, transacao).subscribe(
       (transacaoAtualizada) => {
         alert('Transação atualizada com sucesso!');
         this.modalAtualizacao?.close();
@@ -116,11 +121,11 @@ export class ListaTransacaoComponent implements OnInit {
     )
   }
 
-  removerTransacao(transacao: Transacao) {
+  removerTransacao(carteiraId:number, transacao: Transacao) {
     let confirmaRemocao = window.confirm('Tem certeza que deseja remover essa transação?');
 
     if(confirmaRemocao) {
-      this.transacaoService.removeTransacao(transacao.id).subscribe(transacaoRemovida => {
+      this.transacaoService.removeTransacao(carteiraId, transacao.id).subscribe(transacaoRemovida => {
           this.transacoes = this.transacoes.filter(transacaoFiltrada => transacaoFiltrada.id != transacao.id);
         }
       )
@@ -138,7 +143,7 @@ export class ListaTransacaoComponent implements OnInit {
   }
 
   isDebitoNaCarteira(transacao:Transacao) {
-    return transacao.tipoTransacao?.id?.toUpperCase() === "D";
+    return transacao.tipoTransacao?.toString() === "DEBITO";
   }
 
   consultarResumoMes(ano:number, mes:number){
