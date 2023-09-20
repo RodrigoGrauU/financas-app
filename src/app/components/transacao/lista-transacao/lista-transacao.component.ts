@@ -71,7 +71,7 @@ export class ListaTransacaoComponent implements OnInit {
     this.transacaoService.buscaTransacoes(this.carteiraSelecionada, this.anoTransacaoSelecionado, this.mesTransacaoSelecionado).subscribe(
       (transacoes) => {
         this.transacoes = transacoes;
-         this.consultarResumoMes(this.anoTransacaoSelecionado, this.mesTransacaoSelecionado);
+         this.consultarResumoMes(this.anoTransacaoSelecionado, this.mesTransacaoSelecionado, this.carteiraSelecionada);
          console.log(this.transacoes);
       }
     )
@@ -146,8 +146,8 @@ export class ListaTransacaoComponent implements OnInit {
     return transacao.tipoTransacao?.toString() === "DEBITO";
   }
 
-  consultarResumoMes(ano:number, mes:number){
-    this.transacaoService.consultarResumoMes(ano, mes).subscribe(resposta => {
+  consultarResumoMes(ano:number, mes:number, carteiraId:number){
+    this.transacaoService.consultarResumoMes(ano, mes, carteiraId).subscribe(resposta => {
       this.resumoMes = resposta;
     })
   }

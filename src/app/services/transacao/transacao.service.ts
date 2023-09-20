@@ -69,8 +69,8 @@ export class TransacaoService {
 
   }
 
-  consultarResumoMes(ano: number, mes: number):Observable<ResumoMes> {
-    console.log('Realizando consulta do resumo do mes. URL: ' + this.urlBase + "/resumos-meses?ano=" + ano + "&mesTransacao=" + mes);
-    return this.http.get<ResumoMes>(this.urlBase + "/resumos-meses?ano=" + ano + "&mes=" + mes);
+  consultarResumoMes(ano: number, mes: number, carteiraId: number):Observable<ResumoMes> {
+    console.log('Realizando consulta do resumo do mes. URL: ' + this.urlBase + "/resumos-meses?ano=" + ano + "&mes=" + mes + "&carteiraId=" + carteiraId);
+    return this.http.get<ResumoMes>(this.urlBase + "/resumos-meses?ano=" + ano + "&mes=" + mes + "&carteiraId=" + carteiraId);
   }
 }
