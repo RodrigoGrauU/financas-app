@@ -1,39 +1,31 @@
+import { Token } from '@angular/compiler';
 import { Usuario } from './../../model/usuario';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
+  private urlBase = environment.apiUrl;
+
   constructor(private httpClient:HttpClient, private router:Router) { }
 
-  logar(usuario:Usuario) {
-    return this.mockUsuarioLogin(usuario).pipe(tap((resposta:any) => {
-      if(!resposta.sucesso) return;
-      localStorage.setItem('token', btoa(resposta.token));
-      localStorage.setItem('usuario', btoa(JSON.stringify(resposta.usuario)));
-      this.router.navigate(['']);
-    }))
-
-  }
-
-  private mockUsuarioLogin(usuario:Usuario):Observable<Usuario> {
-    var retornoMock: any = [];
-
-    if(usuario.codigo=='admin' && usuario.senha=='123') {
-      retornoMock.sucesso = true;
-      retornoMock.usuario = usuario;
-      retornoMock.token = 'tokenGerado123';
-      return of(retornoMock);
-    }
-
-    retornoMock.sucesso = false;
-    retornoMock.usuario = usuario;
-    return of(retornoMock);
+  logar(usuario:Usuario): void {
+      let urlLogin = this.urlBase + "/login";
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+       this.httpClient.post<any>(urlLogin, JSON.stringify({
+          username: usuario.codigo,
+          password: usuario.senha
+       }), {headers: headers}
+       ).subscribe((resposta) => {
+          localStorage.setItem('usuario', btoa(JSON.stringify(usuario)));
+          this.router.navigate(['']);
+      });
   }
 
   deslogar() {
@@ -48,12 +40,11 @@ export class LoginService {
   }
 
   get logado(): boolean {
-    return localStorage.getItem('token') ? true : false;
+    return localStorage.getItem('usuario') ? true : false;
   }
 
   get obterTokenUsuario(): string | null {
-    return localStorage.getItem('token')
-      ? atob(localStorage.getItem('token') || '')
-      : null;
+    let usuario = this.obterUsuarioLogado;
+    return btoa(usuario.codigo + ":"+usuario.senha);
   }
 }

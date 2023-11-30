@@ -13,10 +13,6 @@ export class LoginComponent {
 
   constructor(private route:Router, private loginService: LoginService) { }
   logar() {
-    this.loginService.logar(this.usuario).subscribe((resposta) => {
-      if(!resposta.sucesso) {
-        alert('Usuário ou senha inválidos!');
-      }
-    });
+    this.loginService.logar(this.usuario);  
   }
 }
