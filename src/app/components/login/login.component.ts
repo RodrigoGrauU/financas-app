@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/model/usuario';
 import { LoginService } from 'src/app/services/login/login.service';
+import { ToastInfoService } from 'src/app/services/styles/toast-info.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent {
   usuarioRegistro:Usuario = new Usuario(0, '', '');
 
   constructor(private route:Router, private loginService: LoginService,
-    private elementRef:ElementRef) { }
+    private toastService: ToastInfoService) { }
   logar() {
     this.loginService.logar(this.usuario);  
   }
@@ -43,16 +44,16 @@ export class LoginComponent {
     if(this.usuarioRegistro.senha === passwordConfirm) {
       this.loginService.inserirNovoUsuario(this.usuarioRegistro).subscribe({
         next: (v) => {
-          alert("Usuário criado com sucesso");
+          this.toastService.showSuccess("Usuário criado", "Usuário criado com sucesso. Faça login para entrar");
           this.formLogin();
           this.usuarioRegistro = new Usuario(0, '', '');
         },
         error: (e) => {
-          alert("Não foi possível criar o usuário. Tente novamente mais tarde");
+          this.toastService.showInfo("Criação do usuário", "Não foi possível criar o usuário. Tente novamente mais tarde");
         }
       });
       return;
     }
-    alert('por favor, ajuste os campos da senha');
+    this.toastService.showDanger("Criação de usuário","por favor, ajuste os campos da senha");
   }
 }

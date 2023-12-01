@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbDateParserFormatter, NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateParserFormatter, NgbDatepickerModule, NgbModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './views/home/home.component';
@@ -24,6 +24,7 @@ import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lis
 import { ResumoMesComponent } from './components/transacao/resumo-mes/resumo-mes.component';
 import { CreateCategoriaComponent } from './components/categoria/create/create-categoria.component';
 import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
+import { ToastComponent } from './components/template/toast/toast.component';
 
 
 
@@ -44,7 +45,8 @@ registerLocaleData(ptBR);
     ListaCarteiraComponent,
     ResumoMesComponent,
     CreateCategoriaComponent,
-    ListaCategoriaComponent
+    ListaCategoriaComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ registerLocaleData(ptBR);
     FormsModule,
     HttpClientModule,
     NgbModalModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    NgbToastModule
   ],
   providers: [
     {
