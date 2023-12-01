@@ -33,6 +33,16 @@ export class LoginService {
     this.router.navigate(['login']);
   }
 
+  inserirNovoUsuario(novoUsuario:Usuario):Observable<any> {
+    let UrlLogon = this.urlBase + "/logon";
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.post<any>(UrlLogon, JSON.stringify({
+      username: novoUsuario.codigo,
+      password: novoUsuario.senha,
+      email: novoUsuario.email
+    }), {headers: headers}); 
+  }
+
   get obterUsuarioLogado(): Usuario {
     return localStorage.getItem('usuario')
       ? JSON.parse(atob(localStorage.getItem('usuario') || ''))
