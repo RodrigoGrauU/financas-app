@@ -1,11 +1,10 @@
 import { ResumoMes } from './../../../model/dto/resumoMes';
 import { AnosTransacoes, Carteira } from './../../../model/carteira';
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalDismissReasons, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Transacao } from 'src/app/model/transacao';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 import { FormatDatainputService } from 'src/app/services/utils/format.datainput.service';
-import { TipoTransacao } from 'src/app/model/tipoTransacao';
 
 @Component({
   selector: 'app-lista-transacao',
@@ -150,5 +149,60 @@ export class ListaTransacaoComponent implements OnInit {
     this.transacaoService.consultarResumoMes(ano, mes, carteiraId).subscribe(resposta => {
       this.resumoMes = resposta;
     })
+  }
+
+  obtemListaMesesDisponiveis(): Array<Mes> {
+    let meses: Array<Mes> = new Array();
+    this.mesesDisponiveis.forEach(mes => {
+      switch(mes) {
+        case 1:
+          meses.push(new Mes('Janeiro', mes));
+        break;
+        case 2:
+        meses.push(new Mes('Fevereiro', mes));
+        break;
+        case 3:
+          meses.push(new Mes('Março', mes));
+        break;
+        case 4:
+          meses.push(new Mes('Abril', mes));
+        break;
+        case 5:
+          meses.push(new Mes('Maio', mes));
+        break;
+        case 6:
+          meses.push(new Mes('Junho', mes));
+        break;
+        case 7:
+          meses.push(new Mes('Julho', mes));
+        break;
+        case 8:
+          meses.push(new Mes('Agosto', mes));
+        break;
+        case 9:
+          meses.push(new Mes('Setembro', mes));
+        break;
+        case 10:
+          meses.push(new Mes('Outubro', mes));
+        break;
+        case 11:
+          meses.push(new Mes('Novembro', mes));
+        break;
+        case 12:
+          meses.push(new Mes('Dezembro', mes));
+        break;
+      }
+    });
+    return meses;
+  }
+}
+
+export class Mes {
+  nome: string;
+  valor: number;
+
+  constructor(nome:string, valor: number) {
+    this.nome = nome;
+    this.valor = valor;
   }
 }

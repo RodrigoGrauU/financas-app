@@ -22,7 +22,7 @@
           <div class="form-group col-md-2">
             <select class="form-control" [(ngModel)]="mesTransacaoSelecionado" id="select-mes-transacao" name="mes-transacao">
               <option selected value="0" >mês...</option>
-              <option *ngFor="let mes of mesesDisponiveis; let index = index" value="{{mes}}">{{mes}}</option>
+              <option *ngFor="let mes of obtemListaMesesDisponiveis(); let index = index" value="{{mes.valor}}">{{mes.nome}}</option>
             </select>
           </div>
 
