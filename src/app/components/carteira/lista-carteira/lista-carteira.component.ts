@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Carteira } from 'src/app/model/carteira';
+import { Problem } from 'src/app/model/problem';
 import { CarteiraService } from 'src/app/services/carteira/carteira.service';
+import { ToastInfoService } from 'src/app/services/styles/toast-info.service';
 
 @Component({
   selector: 'app-lista-carteira',
@@ -16,7 +18,7 @@ export class ListaCarteiraComponent implements OnInit {
   closeResult = '';
 
   constructor(private carteiraService: CarteiraService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal, private alertService: ToastInfoService) { }
 
   ngOnInit(): void {
     this.carregaCarteiras();
@@ -53,11 +55,18 @@ export class ListaCarteiraComponent implements OnInit {
   }
 
   atualizarCarteira(carteira:Carteira) {
-    this.carteiraService.atualizarCarteira(carteira).subscribe(() => {
-      alert("Carteira atualizada com sucesso!");
-      this.modalAtualizacaoModelo?.close();
-      this.carregaCarteiras();
+    this.carteiraService.atualizarCarteira(carteira).subscribe({
+      next: () => {
+        this.alertService.showSuccess("Carteira Atualizada", "Sua carteira foi atualizada com sucesso");
+        this.modalAtualizacaoModelo?.close();
+        this.carregaCarteiras();
+        console.log('at');
+      },
+      error: (e) => {
+        let problem: Problem = e.error;
+        let msg = problem.userMessage? problem.userMessage : 'não foi possível atualizar a carteira';
+        this.alertService.showDanger("Erro ao atualizar carteira", msg);
+      }
     });
   }
-
 }
