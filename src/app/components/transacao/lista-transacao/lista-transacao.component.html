@@ -40,6 +40,24 @@
     </div>
   </div>
 
+  <div class="row mb-4">
+    <div class="col-md-6" id="chart-pie-despesas" *ngIf="despesasChartLabels.length > 0">
+      <h3>Despesas</h3>
+      <app-pie-chart
+        [streamData]="despesasChartValues"
+        [pieChartLabels]="despesasChartLabels"
+      ></app-pie-chart>
+    </div>
+  
+    <div class="col-md-6" id="chart-pie-receitas" *ngIf="receitasChartLabels.length > 0">
+      <h3>Receitas</h3>
+      <app-pie-chart
+        [streamData]="receitasChartValues"
+        [pieChartLabels]="receitasChartLabels"
+      ></app-pie-chart>
+    </div>
+  </div>
+
   <table class="table table-borderless">
     <thead>
       <th class="col">#</th>

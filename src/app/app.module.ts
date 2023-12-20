@@ -25,6 +25,7 @@ import { ResumoMesComponent } from './components/transacao/resumo-mes/resumo-mes
 import { CreateCategoriaComponent } from './components/categoria/create/create-categoria.component';
 import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
 import { ToastComponent } from './components/template/toast/toast.component';
+import { PieChartComponent } from "./components/charts/pie-chart/pie-chart.component";
 
 
 
@@ -32,47 +33,48 @@ registerLocaleData(ptBR);
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomeComponent,
-    HeaderComponent,
-    NavComponent,
-    CreateTransacaoComponent,
-    ListaTransacaoComponent,
-    PrincipalComponent,
-    CreateCarteiraComponent,
-    ListaCarteiraComponent,
-    ResumoMesComponent,
-    CreateCategoriaComponent,
-    ListaCategoriaComponent,
-    ToastComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    FormsModule,
-    HttpClientModule,
-    NgbModalModule,
-    CurrencyMaskModule,
-    NgbToastModule
-  ],
-  providers: [
-    {
-      provide: LOCALE_ID,
-      useValue: 'pt'
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
-    {
-      provide: NgbDateParserFormatter,
-      useClass: DateInputFormatterBoostrap
-    }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        HomeComponent,
+        HeaderComponent,
+        NavComponent,
+        CreateTransacaoComponent,
+        ListaTransacaoComponent,
+        PrincipalComponent,
+        CreateCarteiraComponent,
+        ListaCarteiraComponent,
+        ResumoMesComponent,
+        CreateCategoriaComponent,
+        ListaCategoriaComponent,
+        ToastComponent
+    ],
+    providers: [
+        {
+            provide: LOCALE_ID,
+            useValue: 'pt'
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        },
+        {
+            provide: NgbDateParserFormatter,
+            useClass: DateInputFormatterBoostrap
+        }
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        FormsModule,
+        HttpClientModule,
+        NgbModalModule,
+        CurrencyMaskModule,
+        NgbToastModule,
+        PieChartComponent
+    ]
 })
 export class AppModule { }

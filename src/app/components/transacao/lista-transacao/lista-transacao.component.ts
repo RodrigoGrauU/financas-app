@@ -5,6 +5,7 @@ import { ModalDismissReasons, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-b
 import { Transacao } from 'src/app/model/transacao';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 import { FormatDatainputService } from 'src/app/services/utils/format.datainput.service';
+import { TipoTransacao } from 'src/app/model/tipoTransacao';
 
 @Component({
   selector: 'app-lista-transacao',
@@ -22,7 +23,16 @@ export class ListaTransacaoComponent implements OnInit {
   anosTransacoes: AnosTransacoes[] = [];
   transacoes:Array<Transacao> = [];
   resumoMes:ResumoMes = new ResumoMes(0, 0, 0, 0, 0);
+  despesasChartValues: Array<any> = [
+    {data: []}
+  ];
+  despesasChartLabels:Array<any> = [];
 
+  receitasChartValues: Array<any> = [
+    {data: []}
+  ];
+  receitasChartLabels:Array<any> = [];
+    
   //modal
   closeResult = '';
   trasacaoParaAlteracao:Transacao = new Transacao(0, '', new Date());
@@ -42,7 +52,6 @@ export class ListaTransacaoComponent implements OnInit {
     this.consultaCarteirasUsuario();
   }
 
-  //TODO - trabalhar com este método a ter a sessão do usuário logada
   consultaCarteirasUsuario() {
     this.transacaoService.buscaInformacoesCarteiras().subscribe(
       (carteiras) => {
@@ -72,8 +81,55 @@ export class ListaTransacaoComponent implements OnInit {
         this.transacoes = transacoes;
          this.consultarResumoMes(this.anoTransacaoSelecionado, this.mesTransacaoSelecionado, this.carteiraSelecionada);
          console.log(this.transacoes);
+
+        //  this.despesasChartLabels = listaFinal.map(cat => cat.nome);
+         let listaCatChart = this.geraListaChartPie('DEBITO');
+         this.despesasChartValues = [{
+          data: listaCatChart.map(c => c.valor)
+         }];
+         this.despesasChartLabels = listaCatChart.map(c => c.nome);
+
+         let listChartReceitas = this.geraListaChartPie('CREDITO');
+         this.receitasChartValues = [{
+          data: listChartReceitas.map(c => c.valor)
+         }];
+         this.receitasChartLabels = listChartReceitas.map(c => c.nome);
       }
     )
+  }
+
+  private geraListaChartPie(tipoTransacao: string): Array<CategoriaGrafico> {
+    let categoriasUnicas = new Set(this.transacoes
+      .filter(transacao => transacao.tipoTransacao != undefined && transacao.tipoTransacao.toString() === tipoTransacao)
+      .map(transacao => transacao.categoriaTransacao?.id));
+
+    let listaFinal: Array<CategoriaGrafico> = new Array();     
+    categoriasUnicas.forEach(idCategoriaUnica => {
+      let categoriaDetalhe = this.transacoes
+      .filter(transacao => transacao.categoriaTransacao?.id == idCategoriaUnica
+        && transacao.tipoTransacao != undefined && transacao.tipoTransacao.toString() === tipoTransacao)
+      .map(transacao => transacao.categoriaTransacao)[0];
+
+      let categoriaParaGrafico: CategoriaGrafico = {
+        id: categoriaDetalhe ? categoriaDetalhe.id ? categoriaDetalhe.id : 0 : 0,
+        nome: categoriaDetalhe ? categoriaDetalhe.nome : '',
+        valor: 0
+      }
+
+      listaFinal.push(categoriaParaGrafico);
+    })
+    
+    //cria uma lista das categorias com o valor somado com base nas categorias
+    listaFinal.forEach(categoria => {
+      let valor = this.transacoes
+        .filter(tran => tran.categoriaTransacao?.id === categoria.id
+        && tran.tipoTransacao != undefined && tran.tipoTransacao.toString() == tipoTransacao)
+        .map(tran => tran.valor)
+        .reduce((acumulador:number, valorAtual:number) => acumulador + valorAtual, 0)
+        categoria.valor = valor;
+    })
+
+    return listaFinal;
   }
 
   editarTransacao(content:any, transacaoAtualizacao:Transacao) {
@@ -205,4 +261,10 @@ export class Mes {
     this.nome = nome;
     this.valor = valor;
   }
+}
+
+interface CategoriaGrafico {
+  id: number
+  nome: string
+  valor: number
 }
