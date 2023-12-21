@@ -58,29 +58,31 @@
     </div>
   </div>
 
-  <table class="table table-borderless">
-    <thead>
-      <th class="col">#</th>
-      <th class="col">Dia</th>
-      <th class="col">Descrição</th>
-      <th class="col">Categoria</th>
-      <th class="col">Valor</th>
-      <th><!-- edit and delete --></th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let transacao of transacoes; let i = index">
-        <th scope="row">{{ i + 1 }}</th>
-        <td>{{ transacao.dataTransacao | date: 'dd' }}</td>
-        <td>{{ transacao.descricao }}</td>
-        <td>{{ transacao.categoriaTransacao ? transacao.categoriaTransacao.nome : 'N/A' }}</td>
-        <td [ngClass]="isDebitoNaCarteira(transacao) ? 'money-red' : 'money-green'" >{{ transacao.valor | currency:'BRL' }}</td>
-        <td>
-          <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
-          <button type="button" class="btn btn-danger" (click)="removerTransacao(carteiraSelecionada, transacao)"><i class="bi bi-trash"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-borderless">
+      <thead>
+        <th class="col">#</th>
+        <th class="col">Dia</th>
+        <th class="col">Descrição</th>
+        <th class="col">Categoria</th>
+        <th class="col">Valor</th>
+        <th><!-- edit and delete --></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transacao of transacoes; let i = index">
+          <th style="width: 10%;" scope="row">{{ i + 1 }}</th>
+          <td style="width: 10%;" >{{ transacao.dataTransacao | date: 'dd' }}</td>
+          <td style="width: 50%;">{{ transacao.descricao }}</td>
+          <td style="width: 10%;">{{ transacao.categoriaTransacao ? transacao.categoriaTransacao.nome : 'N/A' }}</td>
+          <td style="width: 10%;" [ngClass]="isDebitoNaCarteira(transacao) ? 'money-red' : 'money-green'" >{{ transacao.valor | currency:'BRL' }}</td>
+          <td style="width: 10%;">
+            <button type="button" class="btn btn-primary" (click)="editarTransacao(content, transacao)" ><i class="bi bi-pencil-square"></i></button>
+            <button type="button" class="btn btn-danger" (click)="removerTransacao(carteiraSelecionada, transacao)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <ng-template #content let-modal>
     <div class="modal-header">
