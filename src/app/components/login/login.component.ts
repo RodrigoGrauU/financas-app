@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/model/usuario';
 import { LoginService } from 'src/app/services/login/login.service';
@@ -57,5 +58,14 @@ export class LoginComponent {
       return;
     }
     this.toastService.showDanger("Criação de usuário","por favor, ajuste os campos da senha");
+  }
+
+  isValidForClass(modelo:NgModel):string {
+    if(modelo.valid && (modelo.dirty || modelo.touched)) {
+      return 'is-valid';
+    } else if(modelo.invalid && (modelo.dirty || modelo.touched)) {
+      return 'is-invalid';
+    }
+    return ''
   }
 }

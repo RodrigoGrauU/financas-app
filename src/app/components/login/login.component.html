@@ -19,9 +19,8 @@
         <div class="form-row">
             <div class="col-md-12 mb-4">
             <label class="form-label" for="loginName">Nome do Usuário</label>
-            <input type="text" id="loginName" class="form-control" name="codigo" [(ngModel)]="usuario.codigo" 
-            minlength="3" #nomeLogin="ngModel" [ngClass]="{'is-valid': nomeLogin.valid && (nomeLogin.dirty || nomeLogin.touched), 'is-invalid': !nomeLogin.valid && (nomeLogin.dirty || nomeLogin.touched)}"  
-            required appNomeComEspaco />
+            <input type="text" id="loginName" class="form-control" name="codigo" [(ngModel)]="usuario.codigo" minlength="3" #nomeLogin="ngModel" 
+            [ngClass]="isValidForClass(nomeLogin)" required appNomeComEspaco />
             <div  [ngClass]="{'invalid-tooltip':nomeLogin.invalid}">
               <span *ngIf="nomeLogin.errors?.['nomeComEspacoEmBranco']">
                   este campo não pode conter espaço em branco
@@ -40,7 +39,7 @@
           <div class="col-md-12 mb-4">
             <label class="form-label" for="loginPassword">Senha</label>
             <input type="password" id="loginPassword" class="form-control" name="senha" [(ngModel)]="usuario.senha" #senhaLogin="ngModel" 
-            minlength="4" [ngClass]="{'is-valid': senhaLogin.valid && (senhaLogin.dirty || senhaLogin.touched), 'is-invalid': senhaLogin.invalid && (senhaLogin.dirty || senhaLogin.touched)}" 
+            minlength="4" [ngClass]="isValidForClass(senhaLogin)" 
             required />
             <div  [ngClass]="{'invalid-tooltip':senhaLogin.invalid}">
               <span *ngIf="senhaLogin.errors?.['minlength']?.['requiredLength']">
@@ -103,31 +102,66 @@
         -->
 
         <!-- Name input -->
-        <div class="form-outline mb-4">
-          <input type="text" id="registerName" class="form-control" [(ngModel)]="usuarioRegistro.codigo" name="codigo" minlength="3" required />
-          <div class="valid-feedback">
-            Nome válido
-          </div>
+        <div class="col-md-12 mb-4">
           <label class="form-label" for="registerName">Nome de Usuário</label>
+          <input type="text" id="registerName" class="form-control" [(ngModel)]="usuarioRegistro.codigo" name="codigo" minlength="3" #usuarioLogon="ngModel" appNomeComEspaco
+          [ngClass]="isValidForClass(usuarioLogon)" required />
+          <div  [ngClass]="{'invalid-tooltip':usuarioLogon.invalid}">
+            <span *ngIf="usuarioLogon.errors?.['nomeComEspacoEmBranco']">
+                este campo não pode conter espaço em branco
+            </span>
+            <span *ngIf="usuarioLogon.errors?.['minlength']">
+              insira mais caracteres (no mínimo {{usuarioLogon.errors?.['minlength']?.['requiredLength']}} )
+            </span>
+            <span *ngIf="usuarioLogon.errors?.['required']">
+              Campo obrigatório
+            </span>
+          </div>
         </div>
 
         <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="registerEmail" class="form-control" [(ngModel)]="usuarioRegistro.email" name="email" required />
+        <div class="col-md-12 mb-4">
           <label class="form-label" for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" class="form-control" [(ngModel)]="usuarioRegistro.email" name="email" #emailLogon="ngModel" appNomeComEspaco
+          [ngClass]="isValidForClass(emailLogon)" required />
+          <div [ngClass]="{'invalid-tooltip':emailLogon.invalid}">
+            <span *ngIf="emailLogon.errors?.['nomeComEspacoEmBranco']">
+                este campo não pode conter espaço em branco
+            </span>
+            <span *ngIf="emailLogon.errors?.['required']">
+              Campo obrigatório
+            </span>
+          </div>
         </div>
 
         <!-- Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="registerPassword" class="form-control" [(ngModel)]="usuarioRegistro.senha" minlength="4" name="senha" required />
-          <label class="form-label" for="registerPassword">Senha</label>
+        <div class="col-md-12 mb-4">
+          <label class="form-label" for="registerPassword">Senha</label> 
+          <input type="password" id="registerPassword" class="form-control" [(ngModel)]="usuarioRegistro.senha" minlength="4" name="senha" #senhaLogon="ngModel"
+          [ngClass]="isValidForClass(senhaLogon)" required />
+          <div [ngClass]="{'invalid-tooltip':senhaLogon.invalid}">
+            <span *ngIf="senhaLogon.errors?.['minlength']">
+              insira mais caracteres (no mínimo {{senhaLogon.errors?.['minlength']?.['requiredLength']}} )
+            </span>
+            <span *ngIf="senhaLogon.errors?.['required']">
+              Campo obrigatório
+            </span>
+          </div>
         </div>
 
         <!-- Repeat Password input -->
-        <div class="form-outline mb-4">
-          <input #passwordConfirm #pc="ngModel" type="password" id="registerRepeatPassword" name="passwordConfirmInput" minlength="4"
-          [(ngModel)]="passwordConfirmInput" #pci="ngModel" class="form-control" required />
+        <div class="col-md-12 mb-4">
           <label class="form-label" for="registerRepeatPassword">Confirme a senha</label>
+          <input #passwordConfirm type="password" id="registerRepeatPassword" name="passwordConfirmInput" minlength="4" #senhaConfirmLogon="ngModel"
+          [(ngModel)]="passwordConfirmInput" class="form-control" required [ngClass]="isValidForClass(senhaConfirmLogon)" />
+          <div [ngClass]="{'invalid-tooltip':senhaConfirmLogon.invalid}">
+            <span *ngIf="senhaConfirmLogon.errors?.['minlength']">
+              insira mais caracteres (no mínimo {{senhaConfirmLogon.errors?.['minlength']?.['requiredLength']}} )
+            </span>
+            <span *ngIf="senhaConfirmLogon.errors?.['required']">
+              Campo obrigatório
+            </span>
+          </div>
         </div>
 
         <!-- Checkbox -->
@@ -140,7 +174,7 @@
         </div> -->
 
         <!-- Submit button -->
-        <button type="submit" [disabled]="!formRegistraUsuario.valid && !pci.valid" class="btn btn-primary btn-block mb-3">Registrar</button>
+        <button type="submit" [disabled]="!formRegistraUsuario.valid && senhaConfirmLogon.invalid" class="btn btn-primary btn-block mb-3">Registrar</button>
       </form>
     </div>
   </div>
