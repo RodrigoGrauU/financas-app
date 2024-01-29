@@ -26,6 +26,7 @@ import { CreateCategoriaComponent } from './components/categoria/create/create-c
 import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
 import { ToastComponent } from './components/template/toast/toast.component';
 import { PieChartComponent } from "./components/charts/pie-chart/pie-chart.component";
+import { NomeComEspacoDirective } from './directives/nome-com-espaco.directive';
 
 
 
@@ -47,7 +48,8 @@ registerLocaleData(ptBR);
         ResumoMesComponent,
         CreateCategoriaComponent,
         ListaCategoriaComponent,
-        ToastComponent
+        ToastComponent,
+        NomeComEspacoDirective
     ],
     providers: [
         {

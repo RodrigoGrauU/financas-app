@@ -4,3 +4,7 @@
     height: 400px;
     padding: 10% 15px;
 }
+
+[class^="col-"] {
+    position: relative;
+}

@@ -17,6 +17,8 @@ export class LoginComponent {
   @ViewChild("btnLogin") btnLogin!: ElementRef;
   @ViewChild("passwordConfirm") inputSenhaConfirm!: ElementRef;
 
+  public passwordConfirmInput:string = "";
+
   usuarioRegistro:Usuario = new Usuario(0, '', '');
 
   constructor(private route:Router, private loginService: LoginService,

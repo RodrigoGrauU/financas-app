@@ -15,15 +15,42 @@
   <!-- Pills content -->
   <div class="tab-content">
     <div #divLogin class="tab-pane show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-      <form>
-        <div class="form-outline mb-4">
-          <input type="text" id="loginName" class="form-control" name="codigo" [(ngModel)]="usuario.codigo" />
-          <label class="form-label" for="loginName">usuário</label>
+      <form (ngSubmit)="logar()" #formLogar="ngForm">
+        <div class="form-row">
+            <div class="col-md-12 mb-4">
+            <label class="form-label" for="loginName">Nome do Usuário</label>
+            <input type="text" id="loginName" class="form-control" name="codigo" [(ngModel)]="usuario.codigo" 
+            minlength="3" #nomeLogin="ngModel" [ngClass]="{'is-valid': nomeLogin.valid && (nomeLogin.dirty || nomeLogin.touched), 'is-invalid': !nomeLogin.valid && (nomeLogin.dirty || nomeLogin.touched)}"  
+            required appNomeComEspaco />
+            <div  [ngClass]="{'invalid-tooltip':nomeLogin.invalid}">
+              <span *ngIf="nomeLogin.errors?.['nomeComEspacoEmBranco']">
+                  este campo não pode conter espaço em branco
+              </span>
+              <span *ngIf="nomeLogin.errors?.['minlength']?.['requiredLength']">
+                insira mais caracteres (no mínimo {{nomeLogin.errors?.['minlength']?.['requiredLength']}} )
+              </span>
+              <span *ngIf="nomeLogin.errors?.['required']">
+                Campo obrigatório
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div class="form-outline mb-4">
-          <input type="password" id="loginPassword" class="form-control" name="senha" [(ngModel)]="usuario.senha" />
-          <label class="form-label" for="loginPassword">Senha</label>
+        <div class="form-row">
+          <div class="col-md-12 mb-4">
+            <label class="form-label" for="loginPassword">Senha</label>
+            <input type="password" id="loginPassword" class="form-control" name="senha" [(ngModel)]="usuario.senha" #senhaLogin="ngModel" 
+            minlength="4" [ngClass]="{'is-valid': senhaLogin.valid && (senhaLogin.dirty || senhaLogin.touched), 'is-invalid': senhaLogin.invalid && (senhaLogin.dirty || senhaLogin.touched)}" 
+            required />
+            <div  [ngClass]="{'invalid-tooltip':senhaLogin.invalid}">
+              <span *ngIf="senhaLogin.errors?.['minlength']?.['requiredLength']">
+                insira mais caracteres (no mínimo {{senhaLogin.errors?.['minlength']?.['requiredLength']}} )
+              </span>
+              <span *ngIf="senhaLogin.errors?.['required']">
+                Campo obrigatório
+              </span>
+            </div>
+          </div>
         </div>
 
         <!-- <div class="row mb-4">
@@ -41,7 +68,7 @@
         </div> -->
 
         <!-- Submit button -->
-        <button  (click)="logar()" type="button" class="btn btn-primary btn-block mb-4">Logar</button>
+        <button  type="submit" [disabled]="!formLogar.valid"  class="btn btn-primary btn-block mb-4">Logar</button>
 
         <!-- Register buttons -->
         <div class="text-center">
@@ -51,7 +78,7 @@
     </div>
 
     <div #divLogon class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-      <form>
+      <form novalidate #formRegistraUsuario="ngForm" (ngSubmit)="registrar()" #formRegistraUsuarioElement>
         <!--
         <div class="text-center mb-3">
           <p>Sign up with:</p>
@@ -77,25 +104,29 @@
 
         <!-- Name input -->
         <div class="form-outline mb-4">
-          <input type="text" id="registerName" class="form-control" [(ngModel)]="usuarioRegistro.codigo" name="codigo" />
+          <input type="text" id="registerName" class="form-control" [(ngModel)]="usuarioRegistro.codigo" name="codigo" minlength="3" required />
+          <div class="valid-feedback">
+            Nome válido
+          </div>
           <label class="form-label" for="registerName">Nome de Usuário</label>
         </div>
 
         <!-- Email input -->
         <div class="form-outline mb-4">
-          <input type="email" id="registerEmail" class="form-control" [(ngModel)]="usuarioRegistro.email" name="email" />
+          <input type="email" id="registerEmail" class="form-control" [(ngModel)]="usuarioRegistro.email" name="email" required />
           <label class="form-label" for="registerEmail">Email</label>
         </div>
 
         <!-- Password input -->
         <div class="form-outline mb-4">
-          <input type="password" id="registerPassword" class="form-control" [(ngModel)]="usuarioRegistro.senha"  name="senha" />
+          <input type="password" id="registerPassword" class="form-control" [(ngModel)]="usuarioRegistro.senha" minlength="4" name="senha" required />
           <label class="form-label" for="registerPassword">Senha</label>
         </div>
 
         <!-- Repeat Password input -->
         <div class="form-outline mb-4">
-          <input #passwordConfirm type="password" id="registerRepeatPassword" class="form-control" />
+          <input #passwordConfirm #pc="ngModel" type="password" id="registerRepeatPassword" name="passwordConfirmInput" minlength="4"
+          [(ngModel)]="passwordConfirmInput" #pci="ngModel" class="form-control" required />
           <label class="form-label" for="registerRepeatPassword">Confirme a senha</label>
         </div>
 
@@ -109,7 +140,7 @@
         </div> -->
 
         <!-- Submit button -->
-        <button (click)="registrar()" class="btn btn-primary btn-block mb-3">Registrar</button>
+        <button type="submit" [disabled]="!formRegistraUsuario.valid && !pci.valid" class="btn btn-primary btn-block mb-3">Registrar</button>
       </form>
     </div>
   </div>
