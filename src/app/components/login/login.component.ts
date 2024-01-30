@@ -17,6 +17,10 @@ export class LoginComponent {
   @ViewChild("btnRegister") btnRegister!: ElementRef;
   @ViewChild("btnLogin") btnLogin!: ElementRef;
   @ViewChild("passwordConfirm") inputSenhaConfirm!: ElementRef;
+  @ViewChild("btnLoginForm") btnLoginForm!: ElementRef;
+  @ViewChild("btnLogonForm") btnLogonForm!: ElementRef;
+  @ViewChild("spinnerLogin") spinnerLogin!: ElementRef;
+  @ViewChild("spinnerLogon") spinnerLogon!: ElementRef;
 
   public passwordConfirmInput:string = "";
 
@@ -25,7 +29,23 @@ export class LoginComponent {
   constructor(private route:Router, private loginService: LoginService,
     private toastService: ToastInfoService) { }
   logar() {
-    this.loginService.logar(this.usuario);  
+    this.btnLoginForm.nativeElement.disabled = true;
+    this.spinnerLogin.nativeElement.hidden = false;
+    this.loginService.logar(this.usuario).subscribe({
+      next: (v) => {
+        localStorage.setItem('usuario', btoa(JSON.stringify(this.usuario)));
+        this.route.navigate(['']);
+      },
+      error: (v) => {
+        this.toastService.showInfo("Problema com login", "Não foi possível efetuar o login");
+        this.btnLoginForm.nativeElement.disabled = false;
+        this.spinnerLogin.nativeElement.hidden = true;
+      }
+    }
+    )
+    // .subscribe((resposta) => {
+    //   localStorage.setItem('usuario', btoa(JSON.stringify(this.usuario)));
+    //   this.route.navigate(['']);
   }
 
   formRegistrar() {
@@ -44,19 +64,24 @@ export class LoginComponent {
 
   registrar() {
     let passwordConfirm = this.inputSenhaConfirm.nativeElement.value;
+    this.btnLogonForm.nativeElement.disabled = true;
+    this.spinnerLogon.nativeElement.hidden = false;
     if(this.usuarioRegistro.senha === passwordConfirm) {
       this.loginService.inserirNovoUsuario(this.usuarioRegistro).subscribe({
         next: (v) => {
           this.toastService.showSuccess("Usuário criado", "Usuário criado com sucesso. Faça login para entrar");
           this.formLogin();
           this.usuarioRegistro = new Usuario(0, '', '');
+          this.buttonActiveAgain();
         },
         error: (e) => {
           this.toastService.showInfo("Criação do usuário", "Não foi possível criar o usuário. Tente novamente mais tarde");
+          this.buttonActiveAgain();
         }
       });
       return;
     }
+    this.buttonActiveAgain();
     this.toastService.showDanger("Criação de usuário","por favor, ajuste os campos da senha");
   }
 
@@ -67,5 +92,10 @@ export class LoginComponent {
       return 'is-invalid';
     }
     return ''
+  }
+
+  buttonActiveAgain() {
+    this.spinnerLogon.nativeElement.hidden = true;
+    this.btnLogonForm.nativeElement.disabled = false;
   }
 }

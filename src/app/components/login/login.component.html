@@ -67,7 +67,9 @@
         </div> -->
 
         <!-- Submit button -->
-        <button  type="submit" [disabled]="!formLogar.valid"  class="btn btn-primary btn-block mb-4">Logar</button>
+        <button #btnLoginForm type="submit" [disabled]="!formLogar.valid"  class="btn btn-primary btn-block mb-4" style="--bs-btn-padding-x: 1.5rem;" >Logar
+          <span class="spinner-border spinner-border-sm" aria-hidden="true" #spinnerLogin [hidden]="!formLogar.submitted" ></span>
+        </button>
 
         <!-- Register buttons -->
         <div class="text-center">
@@ -174,7 +176,10 @@
         </div> -->
 
         <!-- Submit button -->
-        <button type="submit" [disabled]="!formRegistraUsuario.valid && senhaConfirmLogon.invalid" class="btn btn-primary btn-block mb-3">Registrar</button>
+        <button #btnLogonForm type="submit" [disabled]="!formRegistraUsuario.valid && senhaConfirmLogon.invalid" class="btn btn-primary btn-block mb-3">
+          Registrar
+          <span class="spinner-border spinner-border-sm" aria-hidden="true" #spinnerLogon hidden="true" ></span>
+        </button>
       </form>
     </div>
   </div>

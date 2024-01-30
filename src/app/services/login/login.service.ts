@@ -15,17 +15,14 @@ export class LoginService {
 
   constructor(private httpClient:HttpClient, private router:Router) { }
 
-  logar(usuario:Usuario): void {
+  logar(usuario:Usuario): Observable<any> {
       let urlLogin = this.urlBase + "/login";
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-       this.httpClient.post<any>(urlLogin, JSON.stringify({
+       return this.httpClient.post<any>(urlLogin, JSON.stringify({
           username: usuario.codigo,
           password: usuario.senha
        }), {headers: headers}
-       ).subscribe((resposta) => {
-          localStorage.setItem('usuario', btoa(JSON.stringify(usuario)));
-          this.router.navigate(['']);
-      });
+       );
   }
 
   deslogar() {
