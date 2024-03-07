@@ -19,9 +19,6 @@
     <form novalidate (ngSubmit)="salvarTransacoes()" #formTransacoesImportadas="ngForm">
       <h3>Transações Importadas</h3>
       
-      {{ formTransacoesImportadas.valid }}
-      {{ formTransacoesImportadas.errors | json }}
-      
       <table class="table table-borderless">
         <thead>
           <th class="col">#</th>
