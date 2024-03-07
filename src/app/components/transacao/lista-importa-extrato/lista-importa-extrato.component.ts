@@ -1,4 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ModalDismissReasons, NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Carteira } from 'src/app/model/carteira';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
 import { TipoTransacao } from 'src/app/model/tipoTransacao';
 import { Transacao } from 'src/app/model/transacao';
@@ -18,7 +21,18 @@ export class ListaImportaExtratoComponent {
   bankStatement:File|null = null;
   listaTransacoes:Array<Transacao>|null = null;
   listaCategoriaTransacoes: Array<CategoriaTransacao> = [];
-carteirasDisponiveis: any;
+  carteirasDisponiveis: any;
+
+  //modal
+  closeResult = '';
+  modelDateParaAtualizar:NgbDateStruct = {year: 2010, month: 1, day: 1};
+  modalAtualizacao?:NgbModalRef;
+  configuracaoPadrao: ModalConfiguracaoImport = {};
+
+
+  constructor(private toastService:ToastInfoService, private transacaoService:TransacaoService, private modalService:NgbModal) {
+    this.modalService = modalService;
+  }
 
   removerTransacao(transacao: Transacao, indexPosition:number) {
     if(this.listaTransacoes != null) {
@@ -47,8 +61,6 @@ carteirasDisponiveis: any;
     )
   }
 
-  constructor(private toastService:ToastInfoService, private transacaoService:TransacaoService) {}
-
   btnEnable() {
     this.btnSubmit.nativeElement.disabled = false;
   }
@@ -66,12 +78,12 @@ carteirasDisponiveis: any;
             this.listaTransacoes =  resultado;
             this.listaTransacoes.forEach(transacao => {
               if(transacao.carteira == null) {
-                transacao.carteira = undefined;
+                transacao.carteira = this.configuracaoPadrao.carteiraPadrao ? this.configuracaoPadrao.carteiraPadrao : undefined;
               }
               if(transacao.categoriaTransacao == null) {
-                transacao.categoriaTransacao = undefined;
+                transacao.categoriaTransacao = this.configuracaoPadrao.categoriaPadrao ? this.configuracaoPadrao.categoriaPadrao : undefined;
               }
-            })
+            })            
         },
         error: (e) => {
           this.toastService.showDanger("Ocorreu um erro", "Erro ao tentar importar arquivo");
@@ -125,4 +137,40 @@ carteirasDisponiveis: any;
   compareCarteira(carteiraA:any, carteiraB:any):boolean {
     return carteiraA && carteiraB && carteiraA.id == carteiraB.id;
   }
+
+  configuraValores(content:any) {
+    this.buscaCarteirasDisponiveis();
+    this.buscaCategoriasDisponiveis();
+    this.modalAtualizacao = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+    this.modalAtualizacao.result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    )
+  }
+
+  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+	}
+  
+  salvaConfiguracao(form:NgForm) {
+    this.configuracaoPadrao.carteiraPadrao = form.controls["carteiraPadrao"].value;
+    this.configuracaoPadrao.categoriaPadrao = form.controls["categoriaPadrao"].value;
+    this.modalAtualizacao?.close();
+  }
+
+}
+
+interface ModalConfiguracaoImport {
+  carteiraPadrao?: Carteira
+  categoriaPadrao?: CategoriaTransacao
 }

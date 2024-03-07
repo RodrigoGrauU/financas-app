@@ -12,6 +12,13 @@
           <div class="col-12">
             <button #btnSubmit class="btn btn-primary" type="submit" disabled>Enviar Arquivo</button>
           </div>
+          <button type="button" class="btn btn-outline-secondary" (click)="configuraValores(content)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+              <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"></path>
+              <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"></path>
+            </svg>
+            <span class="visually-hidden">Button</span>
+          </button>          
       </form>
   </div>
 
@@ -33,18 +40,20 @@
         <tbody>
           <tr *ngFor="let transacao of listaTransacoes; let i = index">
             <th class="col-md" scope="row">{{ i + 1 }}</th>
-            <td class="col-md-2" ><input class="form-control" size="10" type="text" value="{{transacao.dataTransacao | date: 'dd/MM/yyyy'}}"></td>
-            <td class="col-md-3"><input class="form-control" size="70" type="text" value="{{ transacao.descricao }}"></td>
+            <td class="col-md-2" ><input class="form-control" size="10" [maxlength]="10" [minlength]="10" type="text" [(ngModel)]="transacao.dataTransacao" [ngModelOptions]="{standalone: true}"></td>
+            <td class="col-md-3">
+              <input class="form-control" size="70" type="text"  [(ngModel)]="transacao.descricao" [maxlength]="20" [ngModelOptions]="{standalone: true}">
+            </td>
             <td class="col-md-2">
               <select class="form-select" aria-describedby="descricaoCarteiraHelp" 
-              [(ngModel)]="transacao.carteira" name="carteira" [compareWith]="compareCarteira" #carteiraTransacao="ngModel" >
+              [(ngModel)]="transacao.carteira" [ngModelOptions]="{standalone: true}" [compareWith]="compareCarteira" #carteiraTransacao="ngModel" >
                 <option value="undefined" >Selecione a carteira</option>
                 <option *ngFor="let carteira of carteirasDisponiveis; let index = index" [ngValue]="carteira">{{carteira.nome}}</option>
               </select>
             </td>
             <td class="col-sm-1">
               <select class="form-select" aria-describedby="descricaoTiposTransacoesHelp" 
-                [(ngModel)]="transacao.tipoTransacao" name="tipoTransacao" 
+                [(ngModel)]="transacao.tipoTransacao" [ngModelOptions]="{standalone: true}" 
                 [compareWith]="compareTipoTransacao">
                   <option value="undefined" >Selecione tipo...</option>
                   <option *ngFor="let tipo of listaTiposTransacoes(); let i = index" [ngValue]="tipo" >{{ tipo }}</option>
@@ -52,7 +61,7 @@
             </td>
             <td class="col-sm-2">
               <select class="form-select" aria-describedby="descricaoCategoriaTransacaoHelp" 
-              [(ngModel)]="transacao.categoriaTransacao" name="categoriaTransacao" 
+              [(ngModel)]="transacao.categoriaTransacao" [ngModelOptions]="{standalone: true}"
               [compareWith]="compareCategoriaTransacao" required>
                 <option value="undefined" >Selecione</option>
                 <option *ngFor="let categoria of listaCategoriaTransacoes" [ngValue]="categoria" >{{ categoria.nome }}</option>
@@ -61,7 +70,7 @@
             <td class="col-sm-2">
               <input type="text" class="form-control"
               currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
-              [(ngModel)]="transacao.valor" name="valor">
+              [(ngModel)]="transacao.valor" [ngModelOptions]="{standalone: true}">
             </td>
             <td style="width: 10%;">
               <button type="button" class="btn btn-danger" (click)="removerTransacao(transacao, i)"><i class="bi bi-trash"></i></button> 
@@ -75,4 +84,41 @@
   </div>
 
   <app-toast aria-live="polite" aria-atomic="true" ></app-toast>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Configurações de Importação</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form #formConfig="ngForm" (ngSubmit)="salvaConfiguracao(formConfig)">
+        <label for="exampleDataList" class="form-label">Carteira Padrão</label>
+        <select class="form-select" aria-describedby="descricaoCarteiraHelp" 
+        [ngModel]="configuracaoPadrao.carteiraPadrao" name="carteiraPadrao" [compareWith]="compareCarteira" #carteiraTransacao="ngModel" >
+          <option value="undefined" >Selecione a carteira</option>
+          <option *ngFor="let carteira of carteirasDisponiveis; let index = index" [ngValue]="carteira">{{carteira.nome}}</option>
+        </select>
+        <div id="carteiradHelpBlock" class="form-text">
+          Você pode configurar o valor padrão da carteira. Caso o registro importado da transação não tenha a informação da carteira, 
+          então o valor que você definiu será utilizado como padrão.
+        </div>
+
+        <select class="form-select" aria-describedby="descricaoCategoriaTransacaoHelp" 
+        [ngModel]="configuracaoPadrao.categoriaPadrao" name="categoriaPadrao" 
+        [compareWith]="compareCategoriaTransacao">
+          <option value="undefined" >Selecione</option>
+          <option *ngFor="let categoria of listaCategoriaTransacoes" [ngValue]="categoria" >{{ categoria.nome }}</option>
+        </select>
+        <div id="categoriaHelpBlock" class="form-text">
+          Você pode configurar o valor padrão da categoria. Caso o registro importado da transação não tenha a informação da categoria, 
+          então o valor que você definiu será utilizado como padrão.
+        </div>
+
+        <button class="btn btn-primary" type="submit">Salvar</button>
+      </form>
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Atualizar</button>
+    </div> -->
+  </ng-template>
 </div>
