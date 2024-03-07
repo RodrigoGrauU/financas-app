@@ -1,0 +1,81 @@
+<div class="container">
+  <h2>Importar Extrato Bancário</h2>
+  <div>
+      <p>Importe as transações a partir do seu extrato bancário (disponível apenas para o banco BB atualmente)</p>
+  </div>
+
+  <div>
+      <form (ngSubmit)="importarExtrato()" #formImport="ngForm" id="formImportarExtrato" class="row row-cols-lg-auto g-3 align-items-center">
+          <div class="col-12">
+            <input class="form-control" type="file" id="formFile" #fileUpload required (change)="btnEnable()" />
+          </div>
+          <div class="col-12">
+            <button #btnSubmit class="btn btn-primary" type="submit" disabled>Enviar Arquivo</button>
+          </div>
+      </form>
+  </div>
+
+  <div id="divTransacoesImportadas" class="table-responsive" [hidden]="listaTransacoes == null">
+    <form novalidate (ngSubmit)="salvarTransacoes()" #formTransacoesImportadas="ngForm">
+      <h3>Transações Importadas</h3>
+      
+      {{ formTransacoesImportadas.valid }}
+      {{ formTransacoesImportadas.errors | json }}
+      
+      <table class="table table-borderless">
+        <thead>
+          <th class="col">#</th>
+          <th class="col">Data</th>
+          <th class="col">Descrição</th>
+          <th class="col">Cateira</th>
+          <th class="col">Tipo</th>
+          <th class="col">Categoria</th>
+          <th class="col">Valor</th>
+          <th><!-- delete --></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transacao of listaTransacoes; let i = index">
+            <th class="col-md" scope="row">{{ i + 1 }}</th>
+            <td class="col-md-2" ><input class="form-control" size="10" type="text" value="{{transacao.dataTransacao | date: 'dd/MM/yyyy'}}"></td>
+            <td class="col-md-3"><input class="form-control" size="70" type="text" value="{{ transacao.descricao }}"></td>
+            <td class="col-md-2">
+              <select class="form-select" aria-describedby="descricaoCarteiraHelp" 
+              [(ngModel)]="transacao.carteira" name="carteira" [compareWith]="compareCarteira" #carteiraTransacao="ngModel" >
+                <option value="undefined" >Selecione a carteira</option>
+                <option *ngFor="let carteira of carteirasDisponiveis; let index = index" [ngValue]="carteira">{{carteira.nome}}</option>
+              </select>
+            </td>
+            <td class="col-sm-1">
+              <select class="form-select" aria-describedby="descricaoTiposTransacoesHelp" 
+                [(ngModel)]="transacao.tipoTransacao" name="tipoTransacao" 
+                [compareWith]="compareTipoTransacao">
+                  <option value="undefined" >Selecione tipo...</option>
+                  <option *ngFor="let tipo of listaTiposTransacoes(); let i = index" [ngValue]="tipo" >{{ tipo }}</option>
+                </select>
+            </td>
+            <td class="col-sm-2">
+              <select class="form-select" aria-describedby="descricaoCategoriaTransacaoHelp" 
+              [(ngModel)]="transacao.categoriaTransacao" name="categoriaTransacao" 
+              [compareWith]="compareCategoriaTransacao" required>
+                <option value="undefined" >Selecione</option>
+                <option *ngFor="let categoria of listaCategoriaTransacoes" [ngValue]="categoria" >{{ categoria.nome }}</option>
+              </select>
+            </td>
+            <td class="col-sm-2">
+              <input type="text" class="form-control"
+              currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              [(ngModel)]="transacao.valor" name="valor">
+            </td>
+            <td style="width: 10%;">
+              <button type="button" class="btn btn-danger" (click)="removerTransacao(transacao, i)"><i class="bi bi-trash"></i></button> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn btn-primary" type="submit">Salvar</button>
+    </form>
+  </div>
+
+  <app-toast aria-live="polite" aria-atomic="true" ></app-toast>
+</div>

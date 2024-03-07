@@ -73,4 +73,13 @@ export class TransacaoService {
     console.log('Realizando consulta do resumo do mes. URL: ' + this.urlBase + "/resumos-meses?ano=" + ano + "&mes=" + mes + "&carteiraId=" + carteiraId);
     return this.http.get<ResumoMes>(this.urlBase + "/resumos-meses?ano=" + ano + "&mes=" + mes + "&carteiraId=" + carteiraId);
   }
+
+  importarTransacoesArquivo(formData:FormData):Observable<Transacao[]> {
+    return this.http.post<Transacao[]>(this.urlBase + "/extrato", formData);
+  }
+
+  salvarTransacoes(listaTransacoes: Transacao[]):Observable<Object> {
+    let url = this.urlBase + "/extrato/salvarLote";
+    return this.http.post<Object>(url, listaTransacoes);
+  }
 }

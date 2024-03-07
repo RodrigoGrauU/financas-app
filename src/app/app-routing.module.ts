@@ -11,6 +11,7 @@ import { CreateCarteiraComponent } from './components/carteira/create-carteira/c
 import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lista-carteira.component';
 import { CreateCategoriaComponent } from './components/categoria/create/create-categoria.component';
 import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
+import { ListaImportaExtratoComponent } from './components/transacao/lista-importa-extrato/lista-importa-extrato.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
       {path: 'carteiras', component: ListaCarteiraComponent},
       {path: 'adiciona-categoria', component: CreateCategoriaComponent},
       {path: 'categorias', component: ListaCategoriaComponent},
+      {path: 'importa-extrato', component: ListaImportaExtratoComponent}
     ]
 
   }
