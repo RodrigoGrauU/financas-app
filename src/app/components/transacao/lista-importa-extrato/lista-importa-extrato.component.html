@@ -40,7 +40,9 @@
         <tbody>
           <tr *ngFor="let transacao of listaTransacoes; let i = index">
             <th class="col-md" scope="row">{{ i + 1 }}</th>
-            <td class="col-md-2" ><input class="form-control" size="10" [maxlength]="10" [minlength]="10" type="text" [(ngModel)]="transacao.dataTransacao" [ngModelOptions]="{standalone: true}"></td>
+            <td class="col-md-2" >
+              <input class="form-control" type="date" [(ngModel)]="transacao.dataTransacao" [ngModelOptions]="{standalone: true}"/>
+            </td>
             <td class="col-md-3">
               <input class="form-control" size="70" type="text"  [(ngModel)]="transacao.descricao" [maxlength]="20" [ngModelOptions]="{standalone: true}">
             </td>
