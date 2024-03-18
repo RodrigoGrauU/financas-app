@@ -1,5 +1,8 @@
 <app-header></app-header>
-<div *ngIf="router.url === '/'" class="container">
-  <app-home></app-home>
+<div id="main-container">
+  <div *ngIf="router.url === '/'" class="container">
+    <app-home></app-home>
+  </div>
+  <app-nav></app-nav>
+  <app-footer id="footer"></app-footer>
 </div>
-<app-nav></app-nav>
