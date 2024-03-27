@@ -7,7 +7,7 @@ export const usuarioNaoAutenticadoGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if(loginService.logado) {
-    router.navigate(['']);
+    router.navigate(['meu-espaco']);
     return false;
   }
 

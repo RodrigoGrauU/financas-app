@@ -27,7 +27,7 @@ export class LoginService {
 
   deslogar() {
     localStorage.clear();
-    this.router.navigate(['login']);
+    // this.router.navigate(['login']);
   }
 
   inserirNovoUsuario(novoUsuario:Usuario):Observable<any> {

@@ -34,7 +34,7 @@ export class LoginComponent {
     this.loginService.logar(this.usuario).subscribe({
       next: (v) => {
         localStorage.setItem('usuario', btoa(JSON.stringify(this.usuario)));
-        this.route.navigate(['']);
+        this.route.navigate(['meu-espaco']);
       },
       error: (v) => {
         this.toastService.showInfo("Problema com login", "Não foi possível efetuar o login");

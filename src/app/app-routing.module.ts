@@ -12,13 +12,17 @@ import { ListaCarteiraComponent } from './components/carteira/lista-carteira/lis
 import { CreateCategoriaComponent } from './components/categoria/create/create-categoria.component';
 import { ListaCategoriaComponent } from './components/categoria/lista-categoria/lista-categoria.component';
 import { ListaImportaExtratoComponent } from './components/transacao/lista-importa-extrato/lista-importa-extrato.component';
+import { HomeProductComponent } from './views/home-product/home-product.component';
 
 const routes: Routes = [
+  {
+    path: '', component: HomeProductComponent
+  },
   {
     path: 'login', component: LoginComponent, canActivate: [usuarioNaoAutenticadoGuard]
   },
   {
-    path: '', component: PrincipalComponent, canActivate: [usuarioAutenticadoGuard],
+    path: 'meu-espaco', component: PrincipalComponent, canActivate: [usuarioAutenticadoGuard],
     children: [
       {path: 'adiciona-transacao', component: CreateTransacaoComponent},
       {path: 'transacoes', component: ListaTransacaoComponent},
