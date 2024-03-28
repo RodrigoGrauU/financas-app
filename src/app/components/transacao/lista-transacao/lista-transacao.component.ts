@@ -6,6 +6,7 @@ import { Transacao } from 'src/app/model/transacao';
 import { TransacaoService } from 'src/app/services/transacao/transacao.service';
 import { FormatDatainputService } from 'src/app/services/utils/format.datainput.service';
 import { TipoTransacao } from 'src/app/model/tipoTransacao';
+import { ToastInfoService } from 'src/app/services/styles/toast-info.service';
 
 @Component({
   selector: 'app-lista-transacao',
@@ -40,7 +41,7 @@ export class ListaTransacaoComponent implements OnInit {
   modalAtualizacao?:NgbModalRef;
 
   constructor(private transacaoService:TransacaoService, private modalService: NgbModal,
-    private formatDatainputService: FormatDatainputService) {
+    private formatDatainputService: FormatDatainputService, private infoService: ToastInfoService) {
     this.carteiraSelecionada = 0;
     this.mesTransacaoSelecionado = 0;
     this.anoTransacaoSelecionado = 0;
@@ -167,13 +168,17 @@ export class ListaTransacaoComponent implements OnInit {
       carteiraId = 0;
     }
     transacao.dataTransacao = this.formatDatainputService.formatInputDateToOutput(this.modelDateParaAtualizar);
-    this.transacaoService.atualizaTransacao(carteiraId, transacao).subscribe(
-      (transacaoAtualizada) => {
-        alert('Transação atualizada com sucesso!');
+    this.transacaoService.atualizaTransacao(carteiraId, transacao).subscribe({
+      next: (transacaoAtualizada) => {
+        this.infoService.showSuccess("Transação atualizada", "Transação atualizada com sucesso!")
         this.modalAtualizacao?.close();
         this.atualizaListaTransacao();
+      },
+      error: (e) => {
+        this.infoService.showDanger("Erro ao atualizar", "Não foi possível atualizar a transação");
+        console.log(e);
       }
-    )
+    })
   }
 
   removerTransacao(carteiraId:number, transacao: Transacao) {
@@ -184,7 +189,7 @@ export class ListaTransacaoComponent implements OnInit {
           this.transacoes = this.transacoes.filter(transacaoFiltrada => transacaoFiltrada.id != transacao.id);
         }
       )
-      alert('Transação removida com sucesso!');
+      this.infoService.showSuccess("Transação removida", "Transação removida com sucesso!");
     }
   }
 

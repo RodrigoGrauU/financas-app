@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
+import { ToastInfoService } from 'src/app/services/styles/toast-info.service';
 
 @Component({
   selector: 'app-lista-categoria',
@@ -15,7 +16,8 @@ export class ListaCategoriaComponent {
 
   modalAtualizacaoModelo?: NgbModalRef;
 
-  constructor(private modalService: NgbModal, private categoriaService: CategoriaService) {
+  constructor(private modalService: NgbModal, private categoriaService: CategoriaService,
+    private alertService: ToastInfoService) {
     this.categoriaSelecionada = new CategoriaTransacao("");
     this.carregaCategorias();
    }
@@ -26,17 +28,29 @@ export class ListaCategoriaComponent {
   }
 
   removerCategoria(categoria:CategoriaTransacao) {
-    this.categoriaService.removerCategoria(categoria).subscribe(() => {
-      alert("Categoria removida com sucesso!");
-      this.carregaCategorias();
+    this.categoriaService.removerCategoria(categoria).subscribe({
+      next: () => {
+        this.alertService.showSuccess("Categoria removida", "Categoria removida com sucesso!");
+        this.carregaCategorias();
+      }, 
+      error: (e) => {
+        this.alertService.showDanger("Erro", "Não foi possível remover a categoria");
+        console.log(e);
+      }
     })
   }
 
   atualizarCategoria(categoria:CategoriaTransacao) {
-    this.categoriaService.atualizarCategoria(categoria).subscribe(() => {
-      alert("Carteira atualizada com sucesso!");
-      this.modalAtualizacaoModelo?.close();
-      this.carregaCategorias();
+    this.categoriaService.atualizarCategoria(categoria).subscribe({
+      next: () => {
+        this.alertService.showSuccess("Carteira atualizada", "Carteira atualizada com sucesso");
+        this.modalAtualizacaoModelo?.close();
+        this.carregaCategorias();
+      },
+      error: (e) => {
+        this.alertService.showDanger("Erro", "Não foi possível atualizar a categoria");
+        console.log(e);
+      }
     })
   }
 

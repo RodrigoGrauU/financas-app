@@ -48,9 +48,15 @@ export class ListaCarteiraComponent implements OnInit {
 	}
 
   removerCarteira(carteira:Carteira) {
-    this.carteiraService.removerCarteira(carteira).subscribe(() => {
-      alert("Carteira removida com sucesso!");
-      this.carregaCarteiras();
+    this.carteiraService.removerCarteira(carteira).subscribe({
+      next: () => {
+        this.alertService.showSuccess("Carteira removida", "Carteira removida com sucesso!");
+        this.carregaCarteiras();
+      },
+      error: (e) => {
+        this.alertService.showDanger("Erro", "Não foi possível remover a carteira");
+        console.log(e);
+      }
     });
   }
 
@@ -60,7 +66,6 @@ export class ListaCarteiraComponent implements OnInit {
         this.alertService.showSuccess("Carteira Atualizada", "Sua carteira foi atualizada com sucesso");
         this.modalAtualizacaoModelo?.close();
         this.carregaCarteiras();
-        console.log('at');
       },
       error: (e) => {
         let problem: Problem = e.error;

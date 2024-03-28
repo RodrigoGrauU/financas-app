@@ -8,6 +8,7 @@ import { Transacao } from '../../../model/transacao';
 import { TipoTransacao } from 'src/app/model/tipoTransacao';
 import { CategoriaTransacao } from 'src/app/model/categoriaTransacao';
 import { Carteira } from 'src/app/model/carteira';
+import { ToastInfoService } from 'src/app/services/styles/toast-info.service';
 
 @Component({
   selector: 'app-create-transacao',
@@ -31,7 +32,7 @@ export class CreateTransacaoComponent implements OnInit {
   carteirasDisponiveis: Carteira[] = [];
 
   constructor(private transacaoService: TransacaoService, private calendar: NgbCalendar,
-    private formatDatainputService: FormatDatainputService) {}
+    private formatDatainputService: FormatDatainputService, private infoService: ToastInfoService) {}
   ngOnInit(): void {
     this.transacao = this.transacaoASerAtualizada ? this.transacaoASerAtualizada : this.transacao;
     this.modelDate = this.modelDateAtualizacao ? this.modelDateAtualizacao : this.modelDate;
@@ -53,12 +54,16 @@ export class CreateTransacaoComponent implements OnInit {
     if(this.modelDateAtualizacao) {
       this.transacao.dataTransacao = this.formatDatainputService.formatInputDateToOutput(this.modelDateAtualizacao);
     }
-    this.transacaoService.salvarTransacao(this.transacao).subscribe(
-      (transacaoSalva) => {
-        alert('Transação salva com sucesso!');
+    this.transacaoService.salvarTransacao(this.transacao).subscribe({
+      next: (transacaoSalva) => {
+        this.infoService.showSuccess("Transação salva", "Transação salva com sucesso!");
         this.transacao = new Transacao(0, '', new Date());
+      }, 
+      error: (e) => {
+        this.infoService.showDanger("Erro ao salvar", "Não foi possível salvar a transação");
+        console.log(e);
       }
-    )
+    })
   }
 
   buscaInformacoesGeraisCarteira() {
