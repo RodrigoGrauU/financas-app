@@ -1,6 +1,9 @@
 services:
 
   financas-front:
-    image: financas-front:1.0.0
+    build: 
+      context: .
+      args:
+        - TYPE_ENV=development #comment this line for production version
     ports:
       - "80:80"
