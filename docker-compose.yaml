@@ -1,0 +1,6 @@
+services:
+
+  financas-front:
+    image: financas-front:1.0.0
+    ports:
+      - "80:80"
