@@ -26,13 +26,14 @@
         <small id="descricaoTiposTransacoesHelp" class="form-text text-muted">Informe o tipo da transação</small>
       </div>
 
-      <div class="form-group">
-        <label for="tipoCategoria">Categoria</label>
+      <label for="tipoCategoria">Categoria</label>
+      <div class="input-group">
         <select class="form-select" aria-describedby="descricaoCategoriaTransacaoHelp" [(ngModel)]="transacao.categoriaTransacao" name="categoriaTransacao" [compareWith]="compareCategoriaTransacao" id="tipoCategoria">
           <option *ngFor="let categoria of listaCategoriaTransacoes" [ngValue]="categoria" >{{ categoria.nome }}</option>
         </select>
-        <small id="descricaoCategoriaTransacaoHelp" class="form-text text-muted">Informe a categoria da transação. Ex: Saúde, Alimentação, Educação...</small>
+        <button class="btn btn-outline-secondary bi bi-plus" (click)="novaCategoria(adicaoCategoria)" type="button"></button>
       </div>
+      <small id="descricaoCategoriaTransacaoHelp" class="form-text text-muted">Informe a categoria da transação. Ex: Saúde, Alimentação, Educação...</small>
 
       <div class="form-group">
         <label for="valorTransacao">Valor</label>
@@ -62,6 +63,24 @@
 
   <ng-template #adicaoTransacao let-tituloexibido="tituloNovo">
     <button class="btn btn-primary" (click)="salvarTransacao()">Salvar</button>
+  </ng-template>
+
+  <ng-template #adicaoCategoria let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Nova Categoria</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <app-create-categoria
+        [isExibeTitulo]="false"
+        [categoria]="novaCategoriaModel">
+          <ng-template #atualizaCategoria>
+            <button class="btn btn-primary" (click)="salvarNovaCategoria(novaCategoriaModel)">Salvar</button>
+          </ng-template>
+        </app-create-categoria>
+      </form>
+    </div>
   </ng-template>
 
   <app-toast aria-live="polite" aria-atomic="true" ></app-toast>
