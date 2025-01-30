@@ -34,6 +34,7 @@ export class LoginComponent {
     this.loginService.logar(this.usuario).subscribe({
       next: (v) => {
         localStorage.setItem('usuario', btoa(JSON.stringify(this.usuario)));
+        localStorage.setItem('tokenJWT', btoa(v.token));
         this.route.navigate(['meu-espaco']);
       },
       error: (v) => {

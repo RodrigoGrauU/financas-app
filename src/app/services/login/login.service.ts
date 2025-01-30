@@ -54,4 +54,12 @@ export class LoginService {
     let usuario = this.obterUsuarioLogado;
     return btoa(usuario.codigo + ":"+usuario.senha);
   }
+
+  get obterTokenJwt():string {
+      let localStorageJwtToken = localStorage.getItem('tokenJWT');
+      if(localStorageJwtToken == null) {
+        throw new Error('Token não definido!');
+      }
+      return atob(localStorageJwtToken);
+  }
 }

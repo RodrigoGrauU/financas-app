@@ -12,13 +12,13 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let token = null;
     if(this.loginService.logado) {
-      token = this.loginService.obterTokenUsuario;
+      token = this.loginService.obterTokenJwt;
     }
 
     if(token != null) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Basic ${token}`
+          Authorization: `Bearer ${token}`
         }
       });
     }
